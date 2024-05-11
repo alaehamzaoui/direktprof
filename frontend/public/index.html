@@ -59,14 +59,30 @@
 
     <div class = "row g-3 row-cols-1 row-cols-sm-2 row-cols-md-3">
       <div class="col" repeat="4">
-          <div class="card shadow">
-            <img class="profPics" src="img/profsPic/prof{index}.jpg">
-            <div class="card-body">
-              <b>Name</b>
-              <a href="#" class="btn" style="background-color: red; color: white;">Termin</a>
-            </div>
-         </div>
+        <div class="card shadow">
+          <img class="profPics" src="img/profsPic/prof{index}.jpg">
+          <div class="card-body">
+            <b id="profName{index}">Placeholder Name</b> <!-- Placeholder name with an id -->
+            <a href="./profsSeiten/prof{index}.html" class="btn" style="background-color: red; color: white;">Termin</a>
+          </div>
+        </div>
       </div>
+      <script>
+        var professorNames = ["Köhn", "Scheffer", "Hamid", "Oesing"];
+    
+        function renderProfessorNames() {
+          for (var i = 0; i < professorNames.length; i++) {
+            var nameElement = document.getElementById("profName" + i);
+            if (nameElement) {
+              nameElement.textContent = professorNames[i];
+            }
+          }
+        }
+    
+        window.onload = function() {
+          renderProfessorNames();
+        };
+      </script>
     </div>
     <script src="https://cdn.developerakademie.com/libs/repeat.js"></script>
   
