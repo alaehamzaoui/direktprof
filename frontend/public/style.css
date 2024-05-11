@@ -21,28 +21,38 @@ body {
     background-color: red;
     color: white;
     padding: 2% 0;
-    .container {
-        max-width: 2000px;
-        margin-left: 950px;
-    }
- 
   }
+  
+  .container {
+    max-width: 90%; /* Adjust to your preference */
+    margin: 0 auto; /* Center the container horizontally */
+  }
+  
+
+  
   
   h1 {
     font-size: 200%;
   }
   .search-box {
+    
+      transform: translateY(-100px);
+      background-color: var(--black);
+      padding: 4px 0;
+      left: 0;
+      right: 0;
+      padding-left: 70%;
+      padding-bottom: 30%;
+      max-width:500px ;
+      min-width: 300px;
+    
 
     position: absolute;
-    top: 50%;
-    left: 70%;
-    bottom: 80%;
-    transform: translate(-50%, -50%);
+   
+    bottom: 90%;
     z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40%; 
+    align-items: right;
+    justify-content: right;
   }
   .search-input {
     position: absolute;
@@ -57,16 +67,33 @@ body {
     background-repeat: no-repeat;
     background-position: 90% center; 
     padding-left: 3%; 
+    
   }
  
   .logo {
-    position: absolute;
-   
-    margin-right: 50%;
-    top: 500px;
-    z-index: 9000;
-    text-shadow: 100%;
+    font-size: 3vw; /* Set font size relative to viewport width */
+    text-decoration: none;
+    position: absolute; /* Position the logo absolutely */
+    top: 300px; /* Adjust top position as needed */
+    left: 2%; /* Adjust left position as needed */
   }
+  
+  @media only screen and (max-width: 768px) {
+    /* For phone or tablet size screens */
+    .logo {
+      width: 60%; /* Adjust width for smaller screens */
+    }
+  }
+  
+  @media only screen and (min-width: 768px) {
+    /* For larger screens */
+    .logo {
+      width: 30%; /* Adjust width for larger screens */
+    }
+  }
+  
+  
+  
   .koehnCard{
     width: 18rem;
   }
