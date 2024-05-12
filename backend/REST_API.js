@@ -1,6 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
+const connectDB = require('./server/config/db');
 app.use(express.json());
+
+// connect to the database
+connectDB();
 
 const profs = [ 
     { id: 1, name: 'prof1' },
