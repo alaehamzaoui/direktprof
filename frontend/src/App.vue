@@ -5,7 +5,6 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
   components: {
@@ -24,3 +23,5 @@ export default {
   margin-top: 60px;
 }
 </style>
+
+
