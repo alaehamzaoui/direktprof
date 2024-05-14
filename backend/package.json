@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "REST_API.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "REST_API.js" ,
-    "dev" : "nodemon REST_API.js"
+    "start" : "app.js" ,
+    "dev" : "nodemon app.js"
 
   },
   "keywords": [],
