@@ -2,19 +2,129 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const connectDB = require('./server/config/db');
+const prof= require('./models/profs')
 app.use(express.json());
 
 // connect to the database
 connectDB();
 
-const profs = [ 
-    { id: 1, name: 'prof1' },
-    { id: 2, name: 'prof2' },
-    { id: 3, name: 'prof3' }
-];
+const existingProf1 =  prof.findOne({ id: 1 });
 
-app.get('/api/professor', (req, res) => {
- res.send(profs);
+if (!existingProf1) {
+    const prof1 = new prof({
+        id: 1,
+        titel: 'Prof. Dr.',
+        vorname: 'Christian',
+        nachname: 'Scheffer',
+        telefonnummer: '+492343210334',
+        email: 'christian.scheffer@hs-bochum.de',
+        raum: 'C6-03',
+        sprechstunde: [
+            { day: 1, start: '09:00', ende: '11:00' }, 
+            { day: 2, start: '14:00', ende: '16:00' } 
+        ]
+    });
+
+    prof1.save();
+    console.log('Prof1 sucessfully added !');
+} else {
+    console.log('prof1 was already added');
+}
+
+const existingProf2 =  prof.findOne({ id: 2 });
+
+if (!existingProf2) {
+    const prof2 = new prof({
+        id: 2,
+        titel: 'Prof. Dr. rer. nat.',
+        vorname: 'Ursula',
+        nachname: 'Oesing',
+        telefonnummer: '+492343210334',
+        email: 'ursula.oesing@hs-bochum.de',
+        raum: 'C5-03',
+        sprechstunde: [
+            { day: 1, start: '12:00', ende: '14:00' }, 
+            { day: 2, start: '13:00', ende: '15:00' } 
+        ]
+    });
+
+    prof2.save();
+    console.log('Prof2 sucessfully added !');
+} else {
+    console.log('prof2 was already added');
+}
+
+const existingProf3 = prof.findOne({ id: 3 });
+
+if (!existingProf3) {
+    const prof3 = new prof({
+        id: 3,
+        titel: 'Prof. Dr.-Ing.',
+        vorname: 'Carsten',
+        nachname: 'Köhn',
+        telefonnummer: '+492348910334',
+        email: 'carsten.köhn@hs-bochum.de',
+        raum: 'C6-02',
+        sprechstunde: [
+            { day: 1, start: '11:00', ende: '13:00' }, 
+            { day: 2, start: '10:00', ende: '12:00' } 
+        ]
+    });
+
+    prof3.save();
+    console.log('Prof3 sucessfully added !');
+} else {
+    console.log('prof3 was already added');
+}
+
+const existingProf4 = prof.findOne({ id: 4 });
+
+if (!existingProf4) {
+    const prof4 = new prof({
+        id: 4,
+        titel: 'Prof. Dr. rer. nat.',
+        vorname: 'Katrin',
+        nachname: 'Brabender',
+        telefonnummer: '+492348890334',
+        email: 'katrin.brabender@hs-bochum.de',
+        raum: 'C5-20',
+        sprechstunde: [
+            { day: 1, start: '10:30', ende: '12:30' }, 
+            { day: 2, start: '11:00', ende: '13:00' } 
+        ]
+    });
+
+    prof4.save();
+    console.log('Prof4 sucessfully added !');
+} else {
+    console.log('prof4 was already added');
+}
+
+
+
+app.get('/professor/:id' , (req, res) => {
+    const professorId = req.params.id;
+    prof.findOne({ id: professorId })
+        .then((professor) => {
+            if (!professor) {
+                return res.status(404).send('Professor not found');
+            }
+            res.send(professor);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        });
+})
+
+app.get('/professor', (req, res) => {
+    prof.find()
+        .then((result) => {
+            res.send(result) ;
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 });
 
 //Vorschläge für die Professoren
