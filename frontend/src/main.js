@@ -1,8 +1,16 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import prof_list from './components/prof-list.vue'
-import prof_detail from './components/prof-detail.vue'
+import {createRouter, createWebHistory} from 'vue-router'
+import profdetail from './components/profdetail.vue'
+import proflist from './components/proflist.vue'
 
-createApp(App).mount('#app')
-createApp(prof_list).mount('#prof_list')
-createApp(prof_detail).mount('#prof_detail')
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+        { path: '/', component: proflist },
+        { path: '/profdetail', component: profdetail }
+    ]
+})
+
+createApp(App).use(router).mount('#app')

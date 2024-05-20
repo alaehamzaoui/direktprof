@@ -19,6 +19,7 @@
 
 <script>
 export default {
+  name: 'prof-detail',
   data() {
     return {
       professor: null
@@ -29,7 +30,7 @@ export default {
   },
   methods: {
     fetchProfessorDetails() {
-      fetch('http://localhost:3000/api/professor/prof1')
+      fetch('http://localhost:3000/api/professor/'+this.$route.query.professor)
         .then(response => response.json())
         .then(data => {
           this.professor = data;

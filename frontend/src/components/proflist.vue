@@ -1,4 +1,74 @@
-body {
+<template>
+  <header >
+      <div class="container">
+        <h1>Sprechstunde einfach buchen.</h1>
+      </div>
+    </header>
+      <div class="header-container">
+        <img class="header-image" src="img/hs-bo-startseiteBild.jpg" alt="Header Image"/>
+          <div class="card shadow">
+            <div class="search-box">
+              <input type="text" class="search-input" placeholder="Suchen . . . "/>
+            </div>
+        </div>
+      </div>
+    <img class="logo" src="img/ProfDirektLogo (1).png" alt="Logo" />
+    <div  class = "row g-3 row-cols-1 row-cols-sm-2 row-cols-md-3">
+
+      <div v-for="(prof, index) in professors" :key="index" class="col">
+        <div class="card shadow">
+          <img :src="`img/profsPic/prof${index+1}.jpg`" alt="professor">
+          <div class="card-body">
+            <b>{{ prof.name }}</b>
+              <a :href="`./profdetail?professor=${prof.name}`" class="btn" style="background-color: red; color: white;">Termin</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 ProfDirekt</p>
+      </div>
+    </footer>
+
+</template>
+
+<script>
+export default {
+  name: 'prof-list',
+  data() {
+    return {
+      professors: []
+    };
+  },
+  mounted() {
+    this.fetchProfessors();
+  },
+  methods: {
+    fetchProfessors() {
+      fetch('http://localhost:3000/api/professor')
+        .then(response => response.json())
+        .then(data => {
+          this.professors = data;
+        })
+        .catch(error => {
+          console.error('Error fetching the professors:', error);
+        });
+    }
+  }
+}
+</script>
+
+<style>
+ .profPics{
+        height: 50%;
+        object-fit: contain;
+      }
+      .row {
+        height: 20%;
+        object-fit: contain;
+      }
+      body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -62,7 +132,6 @@ body {
     outline: none;
     width: 30%; 
     box-shadow: 0 0 1%;
-    background-image: url('img/searchicon.png');
     background-size: 10%;
     background-repeat: no-repeat;
     background-position: 90% center; 
@@ -97,3 +166,4 @@ body {
   .koehnCard{
     width: 18rem;
   }
+</style>
