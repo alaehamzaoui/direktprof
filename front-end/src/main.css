@@ -3,14 +3,10 @@
     font-family: Arial;
   }
   
-  .page-wrap {
-    margin: auto;
-    max-width: 800px;
-    min-height: 100vh;
-  }
+
   
   button {
-    background-color: black;
+    background-color: red;
     border: none;
     border-radius: 8px;
     color: white;
