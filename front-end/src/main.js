@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-
+import './main.css'
 import App from './App.vue';
 import  * as VueRouter from 'vue-router';
 import ProfsListe from './pages/ProfsListe.vue';

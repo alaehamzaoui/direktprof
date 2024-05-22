@@ -1,6 +1,7 @@
 <template>
+
  <h1>ilyas </h1>
- <router-view></router-view>
+ <router-view> </router-view>
 </template>
 
 <script>
