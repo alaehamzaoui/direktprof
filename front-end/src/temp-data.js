@@ -1,7 +1,7 @@
-import schefferBild from './assets/img/profsPic/prof1.jpg';
+import schefferBild from './assets/img/profsPic/prof4.jpg';
 import LutickeBild from './assets/img/profsPic/prof2.jpg';
 import oesingBild from './assets/img/profsPic/prof3.jpg';
-import kohnBild from './assets/img/profsPic/prof4.jpg';
+import kohnBild from './assets/img/profsPic/prof1.jpg';
 
 
 

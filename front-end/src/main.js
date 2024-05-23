@@ -1,5 +1,8 @@
 import { createApp } from 'vue'
 import './main.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap' // Import Bootstrap JS for interactivity (optional)
+
 import App from './App.vue';
 import  * as VueRouter from 'vue-router';
 import ProfsListe from './pages/ProfsListe.vue';

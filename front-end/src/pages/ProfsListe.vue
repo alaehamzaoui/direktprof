@@ -1,28 +1,27 @@
 <template>
-    <header >
-      <div class="container">
-        <h1>Sprechstunde einfach buchen.</h1>
-      </div>
-    </header>
-      <div class="header-container">
-        <img class="header-image" src="../assets/img/hs-bo-startseiteBild.jpg" alt="Header Image"/>
-          <div class="card shadow">
-            <div class="search-box">
-              <input type="text" class="search-input" placeholder="Suchen . . . "/>
-            </div>
-        </div>
-      </div>
-    <img class="logo" src="../assets/img/ProfDirektLogo (1).png" alt="Logo" />
- 
-    <div class="grid-wrap">
-        <div v-for="prof in profs" :key="prof.id" class="product-item">
-            <img :src="prof.imageName" />
-            <h3 class ="product-name">{{prof.name}}</h3>
-            <button > auswählen</button>
-
-
-        </div>
+  <header>
+    <div class="container">
+      <h1>Sprechstunde einfach buchen.</h1>
     </div>
+  </header>
+
+  <section class="hero">
+    <img class="hero-image" src="../assets/img/hs-bo-startseiteBild.jpg" alt="Header Image" />
+    <div class="search-box">
+      <input type="text" class="search-input" placeholder="Suchen . . ." />
+    </div>
+    <img class="logo" src="../assets/img/ProfDirektLogo (1).png" alt="Logo" />
+  </section>
+
+  <section class="professor-cards">
+    <div v-for="prof in profs" :key="prof.id" class="card bg-white shadow-sm">
+      <img :src="prof.imageName" class="card-img-top" alt="Professor Image" />
+      <div class="card-body">
+        <h3 class="card-title">{{ prof.name }}</h3>
+        <router-link :to="{ path: '/profs/' + prof.id }" class="btn btn-primary btn-hover-green">Auswählen</router-link>
+      </div>
+    </div>
+  </section>
 </template>
 <script>
 import { profs } from "../temp-data.js";
@@ -39,111 +38,88 @@ export default {
 </script>
 
 <style>
- .profPics{
-        height: 50%;
-        object-fit: contain;
-      }
-      .row {
-        height: 20%;
-        object-fit: contain;
-      }
-      body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #fff; /* Set white as default text color */
+}
 
-  .header-image {
-    height: 100vh;
-    width: 100%;
-    object-fit: cover;
-    background-position: center;
-    filter: brightness(60%);
-    position: relative;
-  }
-  .header-container {
-    position: relative;
-  }
-  header {
-    background-size: cover;
-    background-position: center;
-    background-color: red;
-    color: white;
-    padding: 2% 0;
-  }
-  
-  .container {
-    max-width: 90%; /* Adjust to your preference */
-    margin: 0 auto; /* Center the container horizontally */
-  }
-  
+header {
+  background-color: #c60000; /* Red background color */
+  padding-bottom: 0%;
+  text-align: center;
+}
 
-  
-  
-  h1 {
-    text-decoration: none;
-    font-size: 200%;
-  }
-  .search-box {
-    
-      transform: translateY(-100px);
-      background-color: var(--black);
-      padding: 4px 0;
-      left: 0;
-      right: 0;
-      padding-left: 70%;
-      padding-bottom: 30%;
-      max-width:500px ;
-      min-width: 300px;
-    
+h1 {
+  font-size: 2rem;
+}
 
-    position: absolute;
-   
-    bottom: 90%;
-    z-index: 1000;
-    align-items: right;
-    justify-content: right;
-  }
-  .search-input {
-    position: absolute;
-    padding: 2%;
-    border-radius: 5%;
-    border: 1px solid #ccc;
-    outline: none;
-    width: 30%; 
-    box-shadow: 0 0 1%;
-    background-size: 10%;
-    background-repeat: no-repeat;
-    background-position: 90% center; 
-    padding-left: 3%; 
-    
-  }
- 
-  .logo {
-    font-size: 3vw; /* Set font size relative to viewport width */
-    text-decoration: none;
-    position: absolute; /* Position the logo absolutely */
-    top: 300px; /* Adjust top position as needed */
-    left: 2%; /* Adjust left position as needed */
-  }
+.hero {
+  position: relative;
+}
+
+.hero-image {
+  padding: 0%;
+  width: 100%;
+  height: 400px; /* Adjust hero image height as needed */
+  object-fit: cover;
+  filter: brightness(60%);
+}
+
+.search-box {
+  position: absolute;
+  bottom: 20px; /* Adjust search bar position as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fff; /* White background for input field */
+  color: #333; /* Black text color for input field */
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  /* Adjust logo size as needed */
+  width: 250px; /* Example size */
+  height: auto; /* Maintain logo aspect ratio */
+}
+
+.professor-cards {
+  display: flex; /* Arrange professor cards horizontally */
+  flex-wrap: wrap; /* Wrap cards to fit container width */
+  margin: 2rem 0; /* Add some margin around cards */
+}
+
+.card {
+  margin: 1rem; /* Add margin between cards */
+  width: 250px; /* Adjust card width as needed */
+}
+
+.card-img-top {
+  height: 150px; /* Set height for professor image */
+  object-fit: cover;
+}
+.btn-hover-green:hover {
+  background-color: green; /* Change to your desired green shade */
+  border-color: green; /* Change border color if needed */
+}
+
+.btn-primary {
   
-  @media only screen and (max-width: 768px) {
-    /* For phone or tablet size screens */
-    .logo {
-      width: 60%; /* Adjust width for smaller screens */
-    }
-  }
-  
-  @media only screen and (min-width: 768px) {
-    /* For larger screens */
-    .logo {
-      width: 30%; /* Adjust width for larger screens */
-    }
-  }
-  
-  
-  
-  .koehnCard{
-    width: 18rem;
-  }
+  background-color: #c60000; /* Red button color */
+  border-color: #c60000; /* Red button border */
+}
+
+
 </style>
