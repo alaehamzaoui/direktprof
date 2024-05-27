@@ -15,24 +15,34 @@
 
   <section class="professor-cards">
     <div v-for="prof in profs" :key="prof.id" class="card bg-white shadow-sm">
-      <img :src="prof.imageName" class="card-img-top" alt="Professor Image" />
+      <img :src="prof.imageUrl" class="card-img-top" alt="Professor Image" />
       <div class="card-body">
-        <h3 class="card-title">{{ prof.name }}</h3>
+        <h3 class="card-title">{{ prof.vorname }}</h3>
         <router-link :to="{ path: '/profs/' + prof.id }" class="btn btn-primary btn-hover-green">Auswählen</router-link>
       </div>
     </div>
   </section>
 </template>
 <script>
-import { profs } from "../temp-data.js";
+import axios from "axios";
+//import { profs } from "../temp-data.js";
 export default {
     name: "ProfsListe",
     
     data() {
         return {
-            profs,
+            profs: [],
         };
     },
+    created() {
+    axios.get('api/professor')
+      .then(response => {
+        this.profs = response.data;
+      })
+      .catch(error => {
+        console.error('Es gab einen Fehler :', error);
+      });
+  },
    
 }
 </script>

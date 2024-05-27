@@ -1,13 +1,17 @@
 <template>
-    <div class="container mt-4">
+    <div class="container mt-4" v-if="prof">
       <div class="card mb-4 border-danger">
-        <img :src="prof.imageName" class="card-img-top" alt="Professor Bild">
+        <img :src="prof.imageUrl" class="card-img-top" alt="Professor Bild">
         <div class="card-body bg-white text-danger">
-          <h5 class="card-title">{{ prof.name }}</h5>
-          <p class="card-text">Sprechstunde: {{ prof.sprechstunde.tag }} von {{ prof.sprechstunde.beginn }} bis {{ prof.sprechstunde.ende }}</p>
+          <h5 class="card-title">{{ prof.titel }} {{ prof.vorname }} {{ prof.nachname }}</h5>
+          <p class="card-text">Sprechstunde: {{ prof.sprechstunde.day }} von {{ prof.sprechstunde[1].start }} bis {{ prof.sprechstunde[1].ende }}</p>
+          <p class="card-text">fachbereich Informatik und Elektrotechnik</p>
+          <p class="card-text">{{ prof.raum }}</p>
+          <p class="card-text">{{prof.telefonnummer}}</p>
+          <p class="card-text">{{ prof.email }}</p>
         </div>
       </div>
-  
+
       <table class="table table-striped bg-white text-danger">
         <thead class="bg-danger text-white">
           <tr>
@@ -18,10 +22,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{ prof.sprechstunde.tag }}</td>
-            <td>{{ prof.sprechstunde.beginn }}</td>
-            <td>{{ prof.sprechstunde.ende }}</td>
+          <tr v-for=" i in 2" :key="i">
+            <td>{{ prof.sprechstunde[i-1].day }}</td>
+            <td>{{ prof.sprechstunde[i-1].start }}</td>
+            <td>{{ prof.sprechstunde[i-1].ende }}</td>
             <td><button class="btn btn-outline-danger" @click="showModal = true">Buchen</button></td>
           </tr>
         </tbody>
@@ -58,18 +62,29 @@
   </template>
   
   <script>
-  import { profs } from '../temp-data.js';
+  import axios from "axios";
+  //import { profs } from '../temp-data.js';
   
   export default {
     name: "ProfSeite",
     data() {
       return {
-        prof: profs.find(prof => prof.id === this.$route.params.profId),
+        prof: null,
         email: '',
         topic: '',
         showModal: false
       };
     },
+    created() {
+    //details from profs from API
+    axios.get(`/api/professor/${this.$route.params.profId}`)
+      .then(response => {
+        this.prof = response.data;
+      })
+      .catch(error => {
+        console.error('Err :', error);
+      });
+  },
     methods: {
       closeModal() {
         this.showModal = false;

@@ -31,6 +31,10 @@ const profSchema= new Schema({
         type: String,
         required: true 
     },
+    imageUrl: {
+        type: String,
+        required: true 
+    },
     sprechstunde:[{
         day:{
             type: Number,

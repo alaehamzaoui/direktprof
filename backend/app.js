@@ -1,9 +1,11 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const app = express();
 const connectDB = require('./server/config/db');
 const prof= require('./models/profs')
 app.use(express.json());
+app.use('/images' , express.static(path.join(__dirname, './assets/img/profspic')));
 
 // connect to the database
 connectDB();
@@ -19,6 +21,7 @@ if (!existingProf1) {
         telefonnummer: '+492343210334',
         email: 'christian.scheffer@hs-bochum.de',
         raum: 'C6-03',
+        imageUrl: '/images/prof4.jpg',
         sprechstunde: [
             { day: 1, start: '09:00', ende: '11:00' }, 
             { day: 2, start: '14:00', ende: '16:00' } 
@@ -42,6 +45,7 @@ if (!existingProf2) {
         telefonnummer: '+492343210334',
         email: 'ursula.oesing@hs-bochum.de',
         raum: 'C5-03',
+        imageUrl: '/images/prof3.jpg',
         sprechstunde: [
             { day: 1, start: '12:00', ende: '14:00' }, 
             { day: 2, start: '13:00', ende: '15:00' } 
@@ -65,6 +69,7 @@ if (!existingProf3) {
         telefonnummer: '+492348910334',
         email: 'carsten.köhn@hs-bochum.de',
         raum: 'C6-02',
+        imageUrl: '/images/prof1.jpg',
         sprechstunde: [
             { day: 1, start: '11:00', ende: '13:00' }, 
             { day: 2, start: '10:00', ende: '12:00' } 
@@ -88,6 +93,7 @@ if (!existingProf4) {
         telefonnummer: '+492348890334',
         email: 'katrin.brabender@hs-bochum.de',
         raum: 'C5-20',
+        imageUrl: '/images/prof5.jpg',
         sprechstunde: [
             { day: 1, start: '10:30', ende: '12:30' }, 
             { day: 2, start: '11:00', ende: '13:00' } 
@@ -100,9 +106,32 @@ if (!existingProf4) {
     console.log('prof4 was already added');
 }
 
+const existingProf5 = prof.findOne({ id: 5 });
+
+if (!existingProf5) {
+    const prof5 = new prof({
+        id: 5,
+        titel: 'Prof. Dr. rer. nat.',
+        vorname: 'Rainer',
+        nachname: 'Lütticke',
+        telefonnummer: '+492348894534',
+        email: 'rainer.luetticke@hs-bochum.de',
+        raum: 'C5-21',
+        imageUrl: '/images/prof2.jpg',
+        sprechstunde: [
+            { day: 1, start: '11:30', ende: '13:30' }, 
+            { day: 2, start: '10:00', ende: '12:00' } 
+        ]
+    });
+    
+    prof5.save();
+    console.log('Prof5 sucessfully added !');
+} else {
+    console.log('prof5 was already added');
+}
 
 
-app.get('/professor/:id' , (req, res) => {
+app.get('/api/professor/:id' , (req, res) => {
     const professorId = req.params.id;
     prof.findOne({ id: professorId })
         .then((professor) => {
@@ -117,7 +146,7 @@ app.get('/professor/:id' , (req, res) => {
         });
 })
 
-app.get('/professor', (req, res) => {
+app.get('/api/professor', (req, res) => {
     prof.find()
         .then((result) => {
             res.send(result) ;
