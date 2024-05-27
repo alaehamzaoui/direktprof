@@ -17,7 +17,7 @@
     <div v-for="prof in profs" :key="prof.id" class="card bg-white shadow-sm">
       <img :src="prof.imageUrl" class="card-img-top" alt="Professor Image" />
       <div class="card-body">
-        <h3 class="card-title">{{ prof.vorname }}</h3>
+        <h3 class="card-title">{{ prof.vorname }} {{ prof.nachname }}</h3>
         <router-link :to="{ path: '/profs/' + prof.id }" class="btn btn-primary btn-hover-green">Auswählen</router-link>
       </div>
     </div>
