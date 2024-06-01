@@ -20,7 +20,7 @@
 </section>
 
   <section class="professor-cards">
-    <div v-for="prof in profs" :key="prof.id" class="card bg-white shadow-sm">
+    <div v-for="prof in profs" :key="prof.id" class="card">
       <card-header class="card-logo">
         <img class="bo-logo" src="../assets/img/logoBO.png" alt="">
       </card-header>
@@ -72,6 +72,8 @@ header {
   margin: 0;
   text-align: center;
   height: 50px;
+  box-shadow: 10px 4px 20px rgb(53, 50, 50);
+
 }
 
 .header-container{
@@ -84,6 +86,7 @@ header {
   color: #ffffff;
   float: right;
   
+  
 }
 .ueberschrift{
   color: black;
@@ -94,6 +97,7 @@ header {
   justify-content: center;
   margin: 2rem 0; /* Add some margin around cards */
   font-weight: bold; /* Make text bold */
+  
 
 }
 .hero {
@@ -109,6 +113,8 @@ header {
   object-fit: cover;
   filter: brightness(60%);
   margin: 0;
+  box-shadow: 0px 4px 20px rgb(104, 97, 97);
+
 }
 
 .search-box {
@@ -122,6 +128,7 @@ header {
   height: 30%;
   display:flex;
   align-items: center;
+  
 }
 .search-input {
   width: 100%;
@@ -132,6 +139,8 @@ header {
   background-color: #fff; /* White background for input field */
   color:black; /* Black text color for input field */
   height: 40%;
+  box-shadow: 10px 4px 20px rgb(56, 53, 53);
+
   
 }
 
@@ -143,6 +152,7 @@ header {
   /* Adjust logo size as needed */
   width: 350px; /* Example size */
   height: auto; /* Maintain logo aspect ratio */
+  
 }
 
 .professor-cards {
@@ -150,13 +160,15 @@ header {
   flex-wrap: wrap; /* Wrap cards to fit container width */
   justify-content: center;
   margin: 2rem 0; /* Add some margin around cards */
-  
+
 }
 
 .card {
   /*margin: 1rem;  Add margin between cards */
   /* width: 250px; Adjust card width as needed */
-  border: 2px solid black;
+ /* border: 2px solid black;*/
+ box-shadow: 15px 10px 30px gray ;
+
   background-color: black;  
   background: #ffffff; /* Card background color */
  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
@@ -189,7 +201,10 @@ header {
   margin-left: auto;
   margin-right: auto;
   margin-top: 5%;
-  border: 2px solid black;
+  margin-bottom: 5%;
+ /* border: 2px solid black;*/
+  box-shadow: 10px 5px 5px rgb(163, 158, 158) ;
+
 }
 .card-title{
   margin-left: auto;
@@ -226,6 +241,8 @@ header {
   align-items: center;
   display: flex;
   width: 60%;
+  box-shadow: 10px 5px 10px rgb(109, 106, 106) ;
+
   
 
 }
@@ -241,6 +258,8 @@ footer {
   /*padding-bottom: 0%;*/
   text-align: center;
   margin-bottom: 0; /* Hier wird der Abstand nach unten entfernt */
+  box-shadow: 10px 1px 20px rgb(104, 97, 97);
+
 
 }
 
