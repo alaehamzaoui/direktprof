@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm">
         <div class="card mb-4">
-          <img :src="prof.imageUrl" class="card-img-top rounded-circle" alt="Professor Bild" />
+          <img :src="require(`../assets/${prof.imageUrl}`)" class="card-img-top rounded-circle" alt="Professor Bild" />
           <div class="card-body bg-white text-danger">
             <div class="profile-card">
               <h5 class="card-title">{{ prof.titel }} {{ prof.vorname }} {{ prof.nachname }}</h5>

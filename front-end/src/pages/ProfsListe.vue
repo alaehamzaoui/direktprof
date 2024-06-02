@@ -14,7 +14,7 @@
       <card-header class="card-logo">
         <img class="bo-logo" src="../assets/img/logoBO.png" alt="" />
       </card-header>
-      <img :src="prof.imageUrl" class="card-img-top rounded-circle" alt="Professor Image" />
+      <img :src="require(`../assets/${prof.imageUrl}`)" class="card-img-top rounded-circle" alt="Professor Image" />
       <div class="card-body">
         <h3 class="card-title">{{ prof.vorname }} {{ prof.nachname }}</h3>
         <router-link :to="{ path: '/profs/' + prof.id }" class="btn btn-primary btn-hover-green">Auswählen</router-link>
@@ -33,15 +33,13 @@ export default {
       profs: [],
     };
   },
-  created() {
-    axios
-      .get('/api/professor')
-      .then(response => {
-        this.profs = response.data;
-      })
-      .catch(error => {
-        console.error('Es gab einen Fehler :', error);
-      });
+  async created() {
+    try {
+      const response = await axios.get('/api/professor');
+      this.profs = response.data;
+    } catch (error) {
+      console.error('Es gab einen Fehler:', error);
+    }
   },
 };
 </script>
