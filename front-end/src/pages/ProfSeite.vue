@@ -1,49 +1,45 @@
 <template>
-  <div class="container mt-4" v-if="prof">
+  <div class="container mt-4 page-wrap" v-if="prof">
     <div class="row">
-      <div class="col-sm">
+      <div class="col-sm-4">
         <div class="card mb-4">
           <img :src="require(`../assets/${prof.imageUrl}`)" class="card-img-top rounded-circle" alt="Professor Bild" />
-          <div class="card-body bg-white text-danger">
-            <div class="profile-card">
-              <h5 class="card-title">{{ prof.titel }} {{ prof.vorname }} {{ prof.nachname }}</h5>
-              <p>Fachbereich Elektrotechnik und Informatik</p>
-              <p><i class="fas fa-phone"></i> {{ prof.telefonnummer }}</p>
-              <p><i class="fas fa-map-marker-alt"></i> {{ prof.raum }}</p>
-              <p><i class="fas fa-envelope"></i> {{ prof.email }}</p>
-            </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ prof.titel }} {{ prof.vorname }} {{ prof.nachname }}</h5>
+            <p>Fachbereich Elektrotechnik und Informatik</p>
+            <p><i class="fas fa-phone"></i> {{ prof.telefonnummer }}</p>
+            <p><i class="fas fa-map-marker-alt"></i> Raum: {{ prof.raum }}</p>
+            <p><i class="fas fa-envelope"></i> <a :href="'mailto:' + prof.email">{{ prof.email }}</a></p>
           </div>
         </div>
       </div>
-      <div class="col-sm">
+      <div class="col-sm-8">
         <div class="appointments">
           <h4 class="h4-card-appointment-title">Bitte wählen Sie einen Termin aus!</h4>
           <div class="btn-grid">
-            <div class="row" v-for="(sprechstunde, index) in prof.sprechstunde" :key="index">
+            <div class="row" v-for="(timeSlot, index) in processedTimeSlots" :key="index">
               <div class="col">
                 <div class="card-time">
                   <div class="card-header-time">
-                    <h5 class="btn-date btn-primary m-2">{{ sprechstunde.day }}</h5>
+                    <h5 class="btn-date btn-primary m-2">{{ timeSlot.displayDate }}</h5>
                   </div>
                   <div class="card-body-time">
                     <button class="btn-time btn-primary m-2">
                       <tr>
-                        <td>{{ sprechstunde.start }}</td>
+                        <td>{{ timeSlot.start }}</td>
                         <td>-</td>
-                        <td>{{ sprechstunde.ende }}</td>
+                        <td>{{ timeSlot.end }}</td>
                       </tr>
                     </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <button class="btn-buchen btn-primary m-2" @click="showModal = true">
-                  <h5>Auswählen</h5>
-                </button>
-              </div>
-            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button class="btn-buchen btn-primary" @click="showModal = true">
+              <h5>Auswählen</h5>
+            </button>
           </div>
         </div>
       </div>
@@ -69,7 +65,7 @@
                 <label for="topic">Anliegen</label>
                 <input type="text" class="form-control" id="topic" v-model="topic" required />
               </div>
-              <div>
+              <div class="text-center">
                 <button type="submit" class="btn-senden">Senden</button>
               </div>
             </form>
@@ -81,8 +77,16 @@
   </div>
 </template>
 
+
+
 <script>
-import axios from "axios";
+
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/js/all.js';
+
+
+import axios from 'axios';
+import { format, addWeeks, startOfWeek, addDays, getDay, isBefore } from 'date-fns';
 
 export default {
   name: "ProfSeite",
@@ -92,6 +96,7 @@ export default {
       email: "",
       topic: "",
       showModal: false,
+      processedTimeSlots: []
     };
   },
   created() {
@@ -99,6 +104,7 @@ export default {
       .get(`/api/professor/${this.$route.params.profId}`)
       .then((response) => {
         this.prof = response.data;
+        this.processTimeSlots();
       })
       .catch((error) => {
         console.error("Err :", error);
@@ -114,140 +120,200 @@ export default {
       this.email = "";
       this.topic = "";
     },
-  },
+    processTimeSlots() {
+      const daysOfWeek = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+      const slots = [];
+      const today = new Date();
+      const currentDay = getDay(today);
+
+      // Determine the start of the first week to display
+      const startOfFirstWeek = currentDay === 6 || currentDay === 0
+        ? startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 })
+        : startOfWeek(today, { weekStartsOn: 1 });
+
+      this.prof.sprechstunde.forEach(slot => {
+        const dayIndex = slot.day - 1; // Convert 1-5 to 0-4 for weekdays
+        const dayName = daysOfWeek[dayIndex];
+
+        for (let weekOffset = 0; weekOffset < 2; weekOffset++) {
+          const dayDate = addDays(addWeeks(startOfFirstWeek, weekOffset), dayIndex);
+
+          if (isBefore(dayDate, today)) {
+            continue; // Skip past dates
+          }
+
+          const startTime = this.convertToMinutes(slot.start);
+          const endTime = this.convertToMinutes(slot.ende);
+
+          for (let time = startTime; time < endTime; time += 60) {
+            slots.push({
+              dayName,
+              date: dayDate,
+              formattedDate: format(dayDate, 'dd-MM-yyyy'),
+              start: this.convertToTimeFormat(time),
+              end: this.convertToTimeFormat(time + 60)
+            });
+          }
+        }
+      });
+
+      // Sort the slots by date
+      slots.sort((a, b) => a.date - b.date);
+
+      this.processedTimeSlots = slots.map(slot => ({
+        ...slot,
+        displayDate: `${slot.dayName}: ${slot.formattedDate}`
+      }));
+    },
+    convertToMinutes(time) {
+      const [hours, minutes] = time.split(':').map(Number);
+      return hours * 60 + minutes;
+    },
+    convertToTimeFormat(minutes) {
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+    }
+  }
 };
+
+
 </script>
 
-<style>
-/* .appointment{
- }*/
-header {
-  background-color: red; /* Red background color */
-  padding: 0%;
+<style>/* General Styles */
+* {
   margin: 0;
-  text-align: center;
-  height: 50px;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-.header-container {
-  margin-right: 0;
-  margin-left: auto;
+html, body {
+  height: 100%;
 }
-
-.header-title {
-  font-size: 2rem;
-  color: #ffffff;
-  float: right;
-}
-
 .container {
   color: black;
 }
+
+/* Profile Card Styles */
 .card-body {
   background-color: white;
+  text-align: left;
 }
-.profile-card {
+.card-title {
+  color: black;
+  font-weight: bold;
+}
+.card img {
+  max-width: 150px;
+  margin: 20px auto;
+  border-radius: 50%;
+  display: block;
+}
+.profile-card p {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+}
+.profile-card i {
+  margin-right: 10px;
   color: red;
 }
-
-/* Karten-Stile */
-.h4-card-appointment-title {
-  margin-left: 20%;
+.profile-card a {
+  color: red;
+  text-decoration: none;
+}
+.profile-card a:hover {
+  text-decoration: underline;
 }
 
+/* Appointment Styles */
+.h4-card-appointment-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
 .btn-grid {
-  display: flex; /* Arrange professor cards horizontally */
-  flex-wrap: wrap; /* Wrap cards to fit container width */
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
-
 .card-time {
   border-radius: 5px;
-  margin: 20px;
+  margin: 10px;
   padding: 10px;
-  box-shadow: 10px 4px 20px rgb(104, 97, 97);
-  border-radius: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
 }
-
 .card-header-time {
-  color: white;
   padding: 10px;
-  padding-left: 0%;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  margin-bottom: 2%;
+  color: black;
 }
-
 .card-body-time {
-  background-color: white;
   padding: 10px;
-  padding-left: 0%;
 }
 .btn-date {
-  color: black;
-  box-shadow: 10px 4px 20px rgb(104, 97, 97);
-  border-color: gray;
-  background-color: #bdb6b6;
   width: 100%;
-  margin-left: 0%;
+  background-color: #bdb6b6;
+  color: black;
+  border: none;
+  padding: 10px;
 }
 .btn-time {
-  color: white;
   width: 100%;
   background-color: rgb(9, 156, 9);
-  box-shadow: 10px 4px 20px rgb(104, 97, 97);
-  border-color: rgb(9, 156, 9);
-  border-block-color: none;
-}
-
-.time-slot {
-  margin-bottom: 10px;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px 0;
 }
 .btn-buchen {
-  width: 80%;
-  height: 80%;
-  margin-left: 20%;
-
-  display: flex; /* Arrange professor cards horizontally */
-  flex-wrap: wrap; /* Wrap cards to fit container width */
-  justify-content: center;
+  background-color: red;
+  color: white;
+  border: none;
+  width: 30%;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+.btn-buchen:hover {
+  background-color: darkred;
 }
 
-.action-button {
-  text-align: center;
-  margin-top: 10px;
-}
-
+/* Modal Styles */
 .modal-dialog {
-  border-radius: 30%;
-  box-shadow: 10px 4px 15px rgb(104, 97, 97);
-}
-.close {
-  position: absolute;
-  right: 0;
-  margin-right: 5%;
-  border-radius: 40%;
-  color: black;
-  border-color: white;
-  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 .modal-header {
-  color: white;
   background-color: #bdb6b6;
+  color: white;
+}
+.close {
+  color: black;
 }
 .btn-senden {
   background-color: red;
   color: white;
-  border-color: red;
-  border-radius: 10px;
-  height: 50%;
-  width: 20%;
-  margin-top: 3%;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  box-shadow: 10px 4px 15px rgb(104, 97, 97);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
+.btn-senden:hover {
+  background-color: darkred;
+}
+.page-wrap {
+  padding: auto;
+  padding-left: 0%;
+  width: 100%;
+  min-height: 893px;
+  margin-bottom: -140px;
+}
+
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1600px;
+    }
+}
+
 </style>

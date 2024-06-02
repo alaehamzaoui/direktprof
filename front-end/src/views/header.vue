@@ -15,14 +15,24 @@
   }
   </script>
   
-  <style scoped>
-  .header-container{
-    margin-right:0;
-    margin-left: auto;
-  }
-  .header-title{
-    font-size: 2rem;
-    color: #ffffff;
-    float: right;  
-  }
+<style scoped>
+.header-container{
+  margin-right:0;
+  margin-left: auto;
+}
+
+header {
+  background-color: red; /* Red background color */
+  padding: 0%;
+  margin: 0;
+  text-align: center;
+  height: 50px;
+}
+
+.header-title {
+  font-size: 2rem;
+  color: #ffffff;
+  float: right;
+}
+
   </style>

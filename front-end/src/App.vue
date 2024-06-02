@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="alldiv">
     <webapp-header/>
     <router-view> </router-view>
     <webapp-footer/>
- </div>
+  </div>
 </template>
 
 <script>
@@ -19,3 +19,4 @@ export default {
   }
 }
 </script>
+

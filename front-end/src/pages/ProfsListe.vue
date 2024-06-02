@@ -11,9 +11,6 @@
   </section>
   <section class="professor-cards">
     <div v-for="prof in profs" :key="prof.id" class="card">
-      <card-header class="card-logo">
-        <img class="bo-logo" src="../assets/img/logoBO.png" alt="" />
-      </card-header>
       <img :src="require(`../assets/${prof.imageUrl}`)" class="card-img-top rounded-circle" alt="Professor Image" />
       <div class="card-body">
         <h3 class="card-title">{{ prof.vorname }} {{ prof.nachname }}</h3>
@@ -165,7 +162,6 @@ body {
   background-color: gray;
   border-color: gray;
 }
-
 .btn-primary {
   background-color: red;
   border-color: red;
