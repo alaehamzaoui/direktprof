@@ -86,7 +86,7 @@ import '@fortawesome/fontawesome-free/js/all.js';
 
 
 import axios from 'axios';
-import { format, addWeeks, startOfWeek, addDays, getDay, isBefore } from 'date-fns';
+import { format, addWeeks, startOfWeek, addDays, getDay } from 'date-fns';
 
 export default {
   name: "ProfSeite",
@@ -137,14 +137,11 @@ export default {
 
         for (let weekOffset = 0; weekOffset < 2; weekOffset++) {
           const dayDate = addDays(addWeeks(startOfFirstWeek, weekOffset), dayIndex);
-
-          if (isBefore(dayDate, today)) {
+          /*if (isBefore(dayDate, today)) {
             continue; // Skip past dates
-          }
-
+          }*/
           const startTime = this.convertToMinutes(slot.start);
           const endTime = this.convertToMinutes(slot.ende);
-
           for (let time = startTime; time < endTime; time += 60) {
             slots.push({
               dayName,
@@ -159,7 +156,6 @@ export default {
 
       // Sort the slots by date
       slots.sort((a, b) => a.date - b.date);
-
       this.processedTimeSlots = slots.map(slot => ({
         ...slot,
         displayDate: `${slot.dayName}: ${slot.formattedDate}`
