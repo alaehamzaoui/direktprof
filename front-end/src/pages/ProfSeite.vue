@@ -24,7 +24,7 @@
                     <h5 class="btn-date btn-primary m-2">{{ timeSlot.displayDate }}</h5>
                   </div>
                   <div class="card-body-time">
-                    <button class="btn-time btn-primary m-2">
+                    <button class="btn-time btn-primary m-2" @click="openModalWithSlot(timeSlot)">
                       <tr>
                         <td>{{ timeSlot.start }}</td>
                         <td>-</td>
@@ -35,11 +35,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="text-center mt-4">
-            <button class="btn-buchen btn-primary" @click="showModal = true">
-              <h5>Auswählen</h5>
-            </button>
           </div>
         </div>
       </div>
@@ -65,6 +60,14 @@
                 <label for="topic">Anliegen</label>
                 <input type="text" class="form-control" id="topic" v-model="topic" required />
               </div>
+              <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" class="form-control" id="studentName" v-model="studentName" required />
+              </div>
+              <div class="form-group">
+                <label for="matrikelNumber">Matrikelnummer</label>
+                <input type="text" class="form-control" id="matrikelNumber" v-model="matrikelNumber" required />
+              </div>
               <div class="text-center">
                 <button type="submit" class="btn-senden">Senden</button>
               </div>
@@ -77,14 +80,9 @@
   </div>
 </template>
 
-
-
 <script>
-
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
-
-
 import axios from 'axios';
 import { format, addWeeks, startOfWeek, addDays, getDay } from 'date-fns';
 
@@ -95,6 +93,9 @@ export default {
       prof: null,
       email: "",
       topic: "",
+      studentName: "",
+      matrikelNumber: "",
+      selectedTimeSlot: null,
       showModal: false,
       processedTimeSlots: []
     };
@@ -113,12 +114,42 @@ export default {
   methods: {
     closeModal() {
       this.showModal = false;
-    },
-    bookAppointment() {
-      alert(`Termin gebucht für ${this.prof.name} mit E-Mail: ${this.email} und Thema: ${this.topic}`);
-      this.showModal = false;
+      this.selectedTimeSlot = null;
       this.email = "";
       this.topic = "";
+      this.studentName = "";
+      this.matrikelNumber = "";
+    },
+    openModalWithSlot(timeSlot) {
+      this.selectedTimeSlot = timeSlot;
+      this.showModal = true;
+    },
+    bookAppointment() {
+      if (!this.selectedTimeSlot) {
+        alert('Please select a time slot.');
+        return;
+      }
+
+      const appointmentData = {
+        object: this.topic,
+        datum: this.selectedTimeSlot.formattedDate,
+        start: this.selectedTimeSlot.start,
+        ende: this.selectedTimeSlot.end,
+        studentName: this.studentName,
+        professorName: `${this.prof.titel} ${this.prof.vorname} ${this.prof.nachname}`,
+        matrikelNumber: this.matrikelNumber,
+        studentEmail: this.email
+      };
+
+      axios
+        .post('/api/appointments', appointmentData)
+        .then(() => {
+          alert('Appointment booked successfully');
+          this.closeModal();
+        })
+        .catch(error => {
+          console.error('Error booking appointment:', error);
+        });
     },
     processTimeSlots() {
       const daysOfWeek = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
@@ -137,16 +168,14 @@ export default {
 
         for (let weekOffset = 0; weekOffset < 2; weekOffset++) {
           const dayDate = addDays(addWeeks(startOfFirstWeek, weekOffset), dayIndex);
-          /*if (isBefore(dayDate, today)) {
-            continue; // Skip past dates
-          }*/
+          const formattedDate = format(dayDate, 'dd-MM-yyyy');
           const startTime = this.convertToMinutes(slot.start);
           const endTime = this.convertToMinutes(slot.ende);
           for (let time = startTime; time < endTime; time += 60) {
             slots.push({
               dayName,
               date: dayDate,
-              formattedDate: format(dayDate, 'dd-MM-yyyy'),
+              formattedDate,
               start: this.convertToTimeFormat(time),
               end: this.convertToTimeFormat(time + 60)
             });
@@ -172,11 +201,10 @@ export default {
     }
   }
 };
-
-
 </script>
 
-<style>/* General Styles */
+<style>
+/* General Styles */
 * {
   margin: 0;
   padding: 0;
@@ -311,5 +339,4 @@ html, body {
         max-width: 1600px;
     }
 }
-
 </style>
