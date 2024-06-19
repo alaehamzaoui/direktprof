@@ -1,15 +1,20 @@
-const mongoose= require('mongoose');
+const mongoose = require('mongoose');
 
-//define the struture of termin
+// Define the structure of termin
 const Schema = mongoose.Schema;
-const terminSchema= new Schema({
+const terminSchema = new Schema({
+    id: {
+        type: String,
+        required: true,
+        unique: true
+    },
     object: {
         type: String,
-        required: true 
+        required: true
     },
     day: {
         type: String,
-        required: true 
+        required: true
     },
     start: {
         type: String,
@@ -17,10 +22,26 @@ const terminSchema= new Schema({
     },
     ende: {
         type: String,
-        required: true 
+        required: true
     },
-} , {timestamps: true}) //to save the date and the time of updates
+    studentName: {
+        type: String,
+        required: true
+    },
+    professorName: {
+        type: String,
+        required: true
+    },
+    matrikelNumber: {
+        type: String,
+        required: true
+    },
+    studentEmail: {
+        type: String,
+        required: true
+    }
+}, { timestamps: true }); // To save the date and time of updates
 
-const termin = mongoose.model('prof' , terminSchema);
+const Termin = mongoose.model('Termin', terminSchema);
 
-module.exports= termin;
+module.exports = Termin;
