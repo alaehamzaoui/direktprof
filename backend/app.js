@@ -50,12 +50,10 @@ app.get('/api/professordetail/:id', (req, res) => {
     if (!prof) return res.status(404).send('The professor with the given ID was not found');
     res.send(prof);
 });
-
 app.post('/api/appointments', async (req, res) => {
-    const { object, day, start, ende, studentName, professorName, matrikelNumber, studentEmail } = req.body;
-    const id = `termin-${new Date().getTime()}`; // Generate a simple ID using timestamp
+    const { object, datum, start, ende, studentName, professorName, matrikelNumber, studentEmail } = req.body;
 
-    const termin = new Termin({ id, object, day, start, ende, studentName, professorName, matrikelNumber, studentEmail });
+    const termin = new Termin({ object, datum, start, ende, studentName, professorName, matrikelNumber, studentEmail });
     try {
         const result = await termin.save();
         res.send(result);
@@ -64,6 +62,7 @@ app.post('/api/appointments', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 app.get('/api/appointments/:id', (req, res) => {
     Termin.findById(req.params.id)

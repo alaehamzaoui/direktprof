@@ -1,18 +1,19 @@
+// bitte npm install mongoose-sequence  nicht vergessen 
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose); // Add mongoose-sequence for auto-increment
 
 // Define the structure of termin
 const Schema = mongoose.Schema;
 const terminSchema = new Schema({
     id: {
-        type: String,
-        required: true,
+        type: Number,
         unique: true
     },
     object: {
         type: String,
         required: true
     },
-    day: {
+    datum: {
         type: String,
         required: true
     },
@@ -41,6 +42,8 @@ const terminSchema = new Schema({
         required: true
     }
 }, { timestamps: true }); // To save the date and time of updates
+
+terminSchema.plugin(AutoIncrement, { inc_field: 'id' }); // Apply auto-increment plugin
 
 const Termin = mongoose.model('Termin', terminSchema);
 
