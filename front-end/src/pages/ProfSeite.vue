@@ -221,10 +221,16 @@ html, body {
 .card-body {
   background-color: white;
   text-align: left;
+  color: red;
+}
+a[href^="mailto:"]{ 
+  color: red;
 }
 .card-title {
   color: black;
   font-weight: bold;
+  text-align: center;
+
 }
 .card img {
   max-width: 150px;
@@ -253,6 +259,8 @@ html, body {
 .h4-card-appointment-title {
   text-align: center;
   margin-bottom: 20px;
+  margin-right: 10%;
+
 }
 .btn-grid {
   display: flex;
@@ -260,21 +268,31 @@ html, body {
   justify-content: center;
 }
 .card-time {
-  border-radius: 5px;
+  border-radius: 15px;
   margin: 10px;
   padding: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   background-color: #f9f9f9;
+  box-shadow: 10px 4px 10px gray;
+  margin-left: 0%;
 }
 .card-header-time {
   padding: 10px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   color: black;
+  margin-left: 0%;
+  padding-left: 0%;
+}
+.card-header-time :hover{
+  background-color: #bdb6b6;
 }
 .card-body-time {
   padding: 10px;
+  margin-left: 0%;
+  padding-left: 0%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 .btn-date {
   width: 100%;
@@ -282,6 +300,8 @@ html, body {
   color: black;
   border: none;
   padding: 10px;
+  border-radius: 30px;
+  box-shadow: 10px 4px 20px rgb(104, 97, 97);
 }
 .btn-time {
   width: 100%;
@@ -290,38 +310,41 @@ html, body {
   border: none;
   padding: 10px;
   margin: 5px 0;
+  box-shadow: 10px 4px 20px rgb(104, 97, 97);
+  border-radius: 30px;
 }
-.btn-buchen {
-  background-color: red;
-  color: white;
-  border: none;
-  width: 30%;
-  padding: 10px 20px;
-  border-radius: 5px;
-}
-.btn-buchen:hover {
-  background-color: darkred;
-}
+
 
 /* Modal Styles */
 .modal-dialog {
-  border-radius: 10px;
+  border-radius: 30px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 .modal-header {
-  background-color: #bdb6b6;
+  background-color:red;
   color: white;
+}
+.form-control{
+  box-shadow: 2px 2px 2px gray;
 }
 .close {
   color: black;
+  border-radius: 50%;
+  width: 5%;
+  border: none;
+  box-shadow: 4px 4px 10px gray;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 .btn-senden {
   background-color: red;
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 30px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 5%;
 }
 .btn-senden:hover {
   background-color: darkred;
@@ -330,13 +353,13 @@ html, body {
   padding: auto;
   padding-left: 0%;
   width: 100%;
-  min-height: 893px;
+  min-height: 1000px;
   margin-bottom: -140px;
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 893px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
-        max-width: 1600px;
+        max-width: 4000px;
     }
 }
 </style>
