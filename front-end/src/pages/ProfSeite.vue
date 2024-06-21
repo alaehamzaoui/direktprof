@@ -24,7 +24,7 @@
                     <h5 class="btn-date btn-primary m-2">{{ timeSlot.displayDate }}</h5>
                   </div>
                   <div class="card-body-time">
-                    <button class="btn-time btn-primary m-2" @click="openModalWithSlot(timeSlot)">
+                    <button class="btn-time btn-primary  m-2" :class="{ 'btn-passe': isDatePassed(timeSlot.date) }" @click="openModalWithSlot(timeSlot)">
                       <tr>
                         <td>{{ timeSlot.start }}</td>
                         <td>-</td>
@@ -84,7 +84,7 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 import axios from 'axios';
-import { format, addWeeks, startOfWeek, addDays, getDay } from 'date-fns';
+import { format, addWeeks, addDays} from 'date-fns';
 
 export default {
   name: "ProfSeite",
@@ -112,6 +112,9 @@ export default {
       });
   },
   methods: {
+    isDatePassed(date) {
+    return new Date(date) < new Date(); // Compare avec la date d'aujourd'hui
+    },
     closeModal() {
       this.showModal = false;
       this.selectedTimeSlot = null;
@@ -152,53 +155,51 @@ export default {
         });
     },
     processTimeSlots() {
-      const daysOfWeek = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
-      const slots = [];
-      const today = new Date();
-      const currentDay = getDay(today);
+  const daysOfWeek = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+  const slots = [];
+  const today = new Date();
+  //const currentDay = today.getDay();
 
-      // Determine the start of the first week to display
-      const startOfFirstWeek = currentDay === 6 || currentDay === 0
-        ? startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 })
-        : startOfWeek(today, { weekStartsOn: 1 });
+  // eine Woche überspringen damit es näschte Woche anfängt
+  const startOfFirstWeek = addWeeks(today, 1);
 
-      this.prof.sprechstunde.forEach(slot => {
-        const dayIndex = slot.day - 1; // Convert 1-5 to 0-4 for weekdays
-        const dayName = daysOfWeek[dayIndex];
+  this.prof.sprechstunde.forEach(slot => {
+    const dayIndex = slot.day - 1; // Convert 1-5 to 0-4 for weekdays
+    const dayName = daysOfWeek[dayIndex];
 
-        for (let weekOffset = 0; weekOffset < 2; weekOffset++) {
-          const dayDate = addDays(addWeeks(startOfFirstWeek, weekOffset), dayIndex);
-          const formattedDate = format(dayDate, 'dd-MM-yyyy');
-          const startTime = this.convertToMinutes(slot.start);
-          const endTime = this.convertToMinutes(slot.ende);
-          for (let time = startTime; time < endTime; time += 60) {
-            slots.push({
-              dayName,
-              date: dayDate,
-              formattedDate,
-              start: this.convertToTimeFormat(time),
-              end: this.convertToTimeFormat(time + 60)
-            });
-          }
-        }
-      });
-
-      // Sort the slots by date
-      slots.sort((a, b) => a.date - b.date);
-      this.processedTimeSlots = slots.map(slot => ({
-        ...slot,
-        displayDate: `${slot.dayName}: ${slot.formattedDate}`
-      }));
-    },
-    convertToMinutes(time) {
-      const [hours, minutes] = time.split(':').map(Number);
-      return hours * 60 + minutes;
-    },
-    convertToTimeFormat(minutes) {
-      const hours = Math.floor(minutes / 60);
-      const mins = minutes % 60;
-      return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+    for (let weekOffset = 0; weekOffset < 2; weekOffset++) {
+      const dayDate = addDays(addWeeks(startOfFirstWeek, weekOffset), dayIndex);
+      const formattedDate = format(dayDate, 'dd-MM-yyyy');
+      const startTime = this.convertToMinutes(slot.start);
+      const endTime = this.convertToMinutes(slot.ende);
+      for (let time = startTime; time < endTime; time += 60) {
+        slots.push({
+          dayName,
+          date: dayDate,
+          formattedDate,
+          start: this.convertToTimeFormat(time),
+          end: this.convertToTimeFormat(time + 60)
+        });
+      }
     }
+  });
+
+  // pper Datum sortieren
+  slots.sort((a, b) => a.date - b.date);
+  this.processedTimeSlots = slots.map(slot => ({
+    ...slot,
+    displayDate: `${slot.dayName}: ${slot.formattedDate}`
+  }));
+},
+convertToMinutes(time) {
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
+},
+convertToTimeFormat(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+}
   }
 };
 </script>
@@ -290,6 +291,11 @@ html, body {
   border: none;
   padding: 10px;
   margin: 5px 0;
+}
+.btn-passe {
+  background-color: #ccc; /* graue farbe für vergangene Datums */
+  color: #666; 
+  pointer-events: none; /* click desactivieren */
 }
 .btn-buchen {
   background-color: red;
