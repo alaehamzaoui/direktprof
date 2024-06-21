@@ -1,8 +1,15 @@
+
 <template>
   <section class="hero">
     <img class="hero-image" src="../assets/img/hs-bo-startseiteBild.jpg" alt="Header Image" />
+   
     <div class="search-box">
-      <input id="fileno" type="text" class="search-input" placeholder="Suchen . . ." />
+      <input id="fileno" 
+            type="text" 
+            class="search-input" 
+            placeholder="Suchen . . ."  
+            v-model="searchQuery"
+            @input="filterProfs"/>
     </div>
     <img class="logo" src="../assets/img/ProfDirektLogo (1).png" alt="Logo" />
   </section>
@@ -10,14 +17,18 @@
     <h1 class="ueberschrift">PROFESSOREN</h1>
   </section>
   <section class="professor-cards">
-    <div v-for="prof in profs" :key="prof.id" class="card">
-      <img :src="require(`../assets/${prof.imageUrl}`)" class="card-img-top rounded-circle" alt="Professor Image" />
-      <div class="card-body">
-        <h3 class="card-title">{{ prof.vorname }} {{ prof.nachname }}</h3>
-        <router-link :to="{ path: '/profs/' + prof.id }" class="btn btn-primary btn-hover-green">Auswählen</router-link>
-      </div>
+  <div v-if="filteredProfs.length === 0" class="no-results">
+    Keine Professoren gefunden.
+  </div>
+  <div v-for="prof in filteredProfs" :key="prof.id" class="card">
+    <img :src="require(`../assets/${prof.imageUrl}`)" class="card-img-top rounded-circle" alt="Professor Image" />
+    <div class="card-body">
+      <h3 class="card-title">{{ prof.vorname }} {{ prof.nachname }}</h3>
+      <router-link :to="{ path: '/profs/' + prof.id }" class="btn btn-primary btn-hover-green">Auswählen</router-link>
     </div>
-  </section>
+  </div>
+</section>
+
 </template>
 
 <script>
@@ -28,7 +39,25 @@ export default {
   data() {
     return {
       profs: [],
+      searchQuery: "",
     };
+  },
+  computed: {
+    filteredProfs() {
+      return this.profs.filter((prof) => {
+        const searchTerm = this.searchQuery.toLowerCase();
+        return (
+          prof.vorname.toLowerCase().includes(searchTerm) ||
+          prof.nachname.toLowerCase().includes(searchTerm)
+        );
+      });
+    },
+  },
+  methods: {
+    async filterProfs() {
+      // This method can be used to trigger any additional filtering logic if necessary.
+      // Currently, it just updates the filteredProfs computed property.
+    },
   },
   async created() {
     try {
@@ -95,11 +124,16 @@ body {
   border-radius: 20px;
   font-size: smaller;
   background-color: #fff;
-  color: black;
+  color:black;
   height: 40%;
   box-shadow: 10px 4px 20px rgb(56, 53, 53);
 }
-
+.no-results {
+  font-size: 1.2rem;
+  color: black;
+  text-align: center;
+  width: 100%;
+}
 .logo {
   position: absolute;
   top: 20px;
@@ -126,16 +160,6 @@ body {
   transition: transform 0.2s;
 }
 
-.card-logo {
-  margin-left: 5%;
-  margin-top: 5%;
-}
-
-.bo-logo {
-  width: 50px;
-  height: auto;
-  order: 1;
-}
 
 .card-img-top {
   width: 70%;
@@ -156,6 +180,7 @@ body {
   justify-content: center;
   align-items: center;
   display: flex;
+  font-size: 150%;
 }
 
 .btn-hover-green:hover {
@@ -171,7 +196,6 @@ body {
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
-  margin-bottom: 0%;
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
@@ -180,4 +204,5 @@ body {
   width: 60%;
   box-shadow: 10px 5px 10px rgb(109, 106, 106);
 }
+
 </style>
