@@ -1,5 +1,6 @@
 <template>
   <div class="container mt-4 page-wrap" v-if="prof">
+
     <div class="row">
       <div class="col-sm-4">
         <div class="card mb-4">
@@ -12,7 +13,9 @@
             <p><i class="fas fa-envelope"></i> <a :href="'mailto:' + prof.email">{{ prof.email }}</a></p>
           </div>
         </div>
+        
       </div>
+      
       <div class="col-sm-8">
         <div class="appointments">
           <h4 class="h4-card-appointment-title">Bitte wählen Sie einen Termin aus!</h4>
@@ -39,7 +42,7 @@
         </div>
       </div>
     </div>
-
+    
     <!-- Modal -->
     <div v-if="showModal" class="modal fade show d-block" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -76,9 +79,14 @@
         </div>
       </div>
     </div>
+    <div class="backbutton">
+      <button class="btn-back" @click="goBack">&lt;&lt; zurück</button>
+    </div>
     <div v-if="showModal" class="modal-backdrop fade show"></div>
   </div>
 </template>
+
+
 
 <script>
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -198,6 +206,9 @@ export default {
       const hours = Math.floor(minutes / 60);
       const mins = minutes % 60;
       return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+    },
+    goBack() {
+      this.$router.push('/'); 
     }
   }
 };
@@ -356,6 +367,24 @@ a[href^="mailto:"]{
   min-height: 1000px;
   margin-bottom: -140px;
 }
+.backbutton{
+  margin-left: 0%;
+  margin-top: 5%;
+  margin-right: 0%;
+}
+.btn-back {
+  background-color: #bdb6b6;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 4px 4px 10px gray;
+  margin-left: 2%;
+}
+.btn-back:hover {
+  background-color: darkgrey;
+}
+
 
 @media (min-width: 893px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
