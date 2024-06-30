@@ -7,6 +7,7 @@ const prof = require('./models/profs');
 const Termin = require('./models/termin'); // Import Termin model
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, './assets/img/profspic')));
+const { sendEmail } = require('./mailer');
 
 // connect to the database
 connectDB();
@@ -60,6 +61,28 @@ app.post('/api/appointments', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/api/appointments/professor/:professorName', (req, res) => {
+    const professorName = req.params.professorName;
+    Termin.find({ professorName })
+        .then(appointments => {
+            res.send(appointments);
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
+app.post('/api/send-email', async (req, res) => {
+    const { to, subject, text } = req.body;
+    try {
+      await sendEmail(to, subject, text);
+      res.status(200).send('Email sent successfully');
+    } catch (error) {
+      res.status(500).send('Error sending email');
     }
 });
 

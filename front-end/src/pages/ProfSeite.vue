@@ -21,16 +21,19 @@
               <div class="col">
                 <div class="card-time">
                   <div class="card-header-time">
-                    <h5 class="btn-date btn-primary m-2">{{ timeSlot.displayDate }}</h5>
+                    <h5 class="btn-date">{{ timeSlot.displayDate }}</h5>
                   </div>
                   <div class="card-body-time">
-                    <button class="btn-time btn-primary m-2" @click="openModalWithSlot(timeSlot)">
-                      <tr>
-                        <td>{{ timeSlot.start }}</td>
-                        <td>-</td>
-                        <td>{{ timeSlot.end }}</td>
-                      </tr>
-                    </button>
+                    <div class="time-detail">
+                      <span>{{ timeSlot.start }} - {{ timeSlot.end }}</span>
+                      <span v-if="timeSlot.booked" class="status gebucht">Gebucht</span>
+                      <button 
+                        v-else 
+                        class="btn-time buchen" 
+                        @click="openModalWithSlot(timeSlot)">
+                        Buchen
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -97,7 +100,8 @@ export default {
       matrikelNumber: "",
       selectedTimeSlot: null,
       showModal: false,
-      processedTimeSlots: []
+      processedTimeSlots: [],
+      appointments: [] // New property to store existing appointments
     };
   },
   created() {
@@ -105,7 +109,7 @@ export default {
       .get(`/api/professor/${this.$route.params.profId}`)
       .then((response) => {
         this.prof = response.data;
-        this.processTimeSlots();
+        this.fetchAppointments();  // Fetch appointments after getting professor data
       })
       .catch((error) => {
         console.error("Err :", error);
@@ -119,17 +123,18 @@ export default {
       this.topic = "";
       this.studentName = "";
       this.matrikelNumber = "";
+      this.emailstudent = "";
     },
     openModalWithSlot(timeSlot) {
       this.selectedTimeSlot = timeSlot;
       this.showModal = true;
     },
     bookAppointment() {
+      this.emailstudent = this.email;
       if (!this.selectedTimeSlot) {
         alert('Please select a time slot.');
         return;
       }
-
       const appointmentData = {
         object: this.topic,
         datum: this.selectedTimeSlot.formattedDate,
@@ -140,15 +145,59 @@ export default {
         matrikelNumber: this.matrikelNumber,
         studentEmail: this.email
       };
-
-      axios
-        .post('/api/appointments', appointmentData)
-        .then(() => {
-          alert('Appointment booked successfully');
+ 
+      axios.post('/api/appointments', appointmentData).then(() => {
+          this.sendConfirmationEmail(appointmentData);
+          alert('Buchung erfolgreich!, Sie erhalten eine Bestätigung per E-Mail.');
           this.closeModal();
+          this.fetchAppointments();
         })
         .catch(error => {
           console.error('Error booking appointment:', error);
+        });
+    },
+    sendConfirmationEmail(appointmentData) {
+      // Send confirmation email to student
+      axios
+        .post('/api/send-email', {
+          to:  this.emailstudent,
+          subject: 'Bestätigungsmail',
+          text: `Ihr Termin mit ${appointmentData.professorName} ist bestätigt für den ${appointmentData.datum} von ${appointmentData.start} bis ${appointmentData.ende}. 
+          Bitte beachten Sie, dass Sie sich 5 Minuten vor dem Termin im Raum ${this.prof.raum} einfinden.
+          falls Sie den Termin nicht wahrnehmen können, können Sie den Termin unter folgendem Link stornieren: http://localhost:8080/termin-stornieren/${appointmentData.matrikelNumber}?date=${appointmentData.datum}&start=${appointmentData.start}&end=${appointmentData.end}&prof=${appointmentData.professorName}
+          Mit freundlichen Grüßen, 
+          ${appointmentData.professorName}`
+        })
+        .then(() => {
+          console.log('Confirmation email sent to student.');
+        })
+        .catch(error => {
+          console.error('Error sending email to student:', error);
+        });
+
+      // Send confirmation email to professor
+      axios
+        .post('/api/send-email', {
+          to: "alae.online27@gmail.com",
+          subject: 'Neuer Termin',
+          text: `Ein neuer Termin wurde von ${this.studentName} für ${appointmentData.datum} von ${appointmentData.start} bis ${appointmentData.ende} gebucht.`
+        })
+        .then(() => {
+          console.log('Confirmation email sent to professor.');
+        })
+        .catch(error => {
+          console.error('Error sending email to professor:', error);
+        });
+    },
+    fetchAppointments() {
+      axios
+        .get(`/api/appointments/professor/${this.prof.titel} ${this.prof.vorname} ${this.prof.nachname}`)
+        .then((response) => {
+          this.appointments = response.data;
+          this.processTimeSlots();
+        })
+        .catch((error) => {
+          console.error('Error fetching appointments:', error);
         });
     },
     processTimeSlots() {
@@ -172,23 +221,27 @@ export default {
           const startTime = this.convertToMinutes(slot.start);
           const endTime = this.convertToMinutes(slot.ende);
           for (let time = startTime; time < endTime; time += 60) {
-            slots.push({
+            const slotObj = {
               dayName,
               date: dayDate,
               formattedDate,
               start: this.convertToTimeFormat(time),
-              end: this.convertToTimeFormat(time + 60)
-            });
+              end: this.convertToTimeFormat(time + 60),
+              booked: this.isBooked(formattedDate, this.convertToTimeFormat(time))  // Check if the slot is booked
+            };
+            slots.push(slotObj);
           }
         }
       });
-
       // Sort the slots by date
       slots.sort((a, b) => a.date - b.date);
       this.processedTimeSlots = slots.map(slot => ({
         ...slot,
-        displayDate: `${slot.dayName}: ${slot.formattedDate}`
+        displayDate: `${slot.dayName} ${slot.formattedDate}`
       }));
+    },
+    isBooked(date, start) {
+      return this.appointments.some(appointment => appointment.datum === date && appointment.start === start);
     },
     convertToMinutes(time) {
       const [hours, minutes] = time.split(':').map(Number);
@@ -261,11 +314,12 @@ html, body {
 }
 .card-time {
   border-radius: 5px;
-  margin: 10px;
-  padding: 10px;
+  margin: 5px;
+  padding: 5px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   background-color: #f9f9f9;
+  text-align: center;
 }
 .card-header-time {
   padding: 10px;
@@ -285,22 +339,33 @@ html, body {
 }
 .btn-time {
   width: 100%;
-  background-color: rgb(9, 156, 9);
   color: white;
   border: none;
   padding: 10px;
   margin: 5px 0;
 }
-.btn-buchen {
-  background-color: red;
+.buchen {
+  background-color: rgb(9, 156, 9);
   color: white;
   border: none;
-  width: 30%;
+  width: 50%;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 15px;
 }
-.btn-buchen:hover {
-  background-color: darkred;
+.gebucht {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  border-radius: 15px;
+  display: inline-block;
+  width: 50%;
+}
+
+.time-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
 }
 
 /* Modal Styles */
