@@ -21,6 +21,7 @@ footer {
   height: 100px;
   bottom: 0;
   width: 100%;
+  
 }
 
 .description {

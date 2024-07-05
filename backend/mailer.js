@@ -8,12 +8,21 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = (to, subject, text) => {
+const sendEmail = (to, subject, text, appointment = null, isProfessor = false) => {
+  let deleteLink = appointment ? `\n\nUm den Termin zu löschen, klicken Sie auf den untenstehenden Link:\n${process.env.BASE_URL}/delete-appointment/${appointment.id}` : '';
+  let emailText = `${text}${deleteLink}`;
+
+  if (isProfessor) {
+    emailText = `${text}\n\nDetails zum Termin:\n- Anliegen: ${appointment.object}\n- Datum: ${appointment.datum}\n- Startzeit: ${appointment.start}\n- Endzeit: ${appointment.ende}\n- Raum: ${appointment.raum}\n- Student: ${appointment.studentName}\n- Matrikelnummer: ${appointment.matrikelNumber}${deleteLink}`;
+  } else {
+    emailText = `${text}\n\nDetails zum Termin:\n- Professor: ${appointment.professorName}\n- Datum: ${appointment.datum}\n- Startzeit: ${appointment.start}\n- Endzeit: ${appointment.ende}\n- Raum: ${appointment.raum}${deleteLink}`;
+  }
+
   const mailOptions = {
     from: process.env.SMTP_EMAIL,
     to,
     subject,
-    text,
+    text: emailText,
   };
 
   return new Promise((resolve, reject) => {

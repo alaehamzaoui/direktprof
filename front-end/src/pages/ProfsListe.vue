@@ -112,7 +112,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 2rem 0;
+  margin: 10%;
 }
 
 .card {

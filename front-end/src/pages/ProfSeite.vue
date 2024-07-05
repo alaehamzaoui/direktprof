@@ -123,16 +123,14 @@ export default {
       this.topic = "";
       this.studentName = "";
       this.matrikelNumber = "";
-      this.emailstudent = "";
     },
     openModalWithSlot(timeSlot) {
       this.selectedTimeSlot = timeSlot;
       this.showModal = true;
     },
-    bookAppointment() {
-      this.emailstudent = this.email;
+    async bookAppointment() {
       if (!this.selectedTimeSlot) {
-        alert('Please select a time slot.');
+        alert('Bitte wählen Sie ein Zeitfenster aus.');
         return;
       }
       const appointmentData = {
@@ -143,51 +141,19 @@ export default {
         studentName: this.studentName,
         professorName: `${this.prof.titel} ${this.prof.vorname} ${this.prof.nachname}`,
         matrikelNumber: this.matrikelNumber,
-        studentEmail: this.email
+        studentEmail: this.email,
+        raum: this.prof.raum // Add room to appointment data
       };
- 
-      axios.post('/api/appointments', appointmentData).then(() => {
-          this.sendConfirmationEmail(appointmentData);
-          alert('Buchung erfolgreich!, Sie erhalten eine Bestätigung per E-Mail.');
-          this.closeModal();
-          this.fetchAppointments();
-        })
-        .catch(error => {
-          console.error('Error booking appointment:', error);
-        });
-    },
-    sendConfirmationEmail(appointmentData) {
-      // Send confirmation email to student
-      axios
-        .post('/api/send-email', {
-          to:  this.emailstudent,
-          subject: 'Bestätigungsmail',
-          text: `Ihr Termin mit ${appointmentData.professorName} ist bestätigt für den ${appointmentData.datum} von ${appointmentData.start} bis ${appointmentData.ende}. 
-          Bitte beachten Sie, dass Sie sich 5 Minuten vor dem Termin im Raum ${this.prof.raum} einfinden.
-          falls Sie den Termin nicht wahrnehmen können, können Sie den Termin unter folgendem Link stornieren: http://localhost:8080/termin-stornieren/${appointmentData.matrikelNumber}?date=${appointmentData.datum}&start=${appointmentData.start}&end=${appointmentData.end}&prof=${appointmentData.professorName}
-          Mit freundlichen Grüßen, 
-          ${appointmentData.professorName}`
-        })
-        .then(() => {
-          console.log('Confirmation email sent to student.');
-        })
-        .catch(error => {
-          console.error('Error sending email to student:', error);
-        });
 
-      // Send confirmation email to professor
-      axios
-        .post('/api/send-email', {
-          to: "alae.online27@gmail.com",
-          subject: 'Neuer Termin',
-          text: `Ein neuer Termin wurde von ${this.studentName} für ${appointmentData.datum} von ${appointmentData.start} bis ${appointmentData.ende} gebucht.`
-        })
-        .then(() => {
-          console.log('Confirmation email sent to professor.');
-        })
-        .catch(error => {
-          console.error('Error sending email to professor:', error);
-        });
+      try {
+        await axios.post('/api/appointments', appointmentData);
+        alert('Buchung erfolgreich! Sie erhalten eine Bestätigung per E-Mail.');
+        this.closeModal();
+        this.fetchAppointments();
+      } catch (error) {
+        console.error('Fehler bei der Buchung des Termins:', error);
+        alert('Fehler beim Buchen des Termins.');
+      }
     },
     fetchAppointments() {
       axios
@@ -197,7 +163,7 @@ export default {
           this.processTimeSlots();
         })
         .catch((error) => {
-          console.error('Error fetching appointments:', error);
+          console.error('Fehler beim Abrufen der Termine:', error);
         });
     },
     processTimeSlots() {
