@@ -16,7 +16,7 @@
   <section class="ueber-professor">
     <h1 class="ueberschrift">PROFESSOREN</h1>
   </section>
-  <section class="professor-cards">
+  <section class="professor-cards" :class="{ 'search-active': filteredProfs.length > 0 }">
   <div v-if="filteredProfs.length === 0" class="no-results">
     Keine Professoren gefunden.
   </div>
@@ -128,6 +128,16 @@ body {
   height: 40%;
   box-shadow: 10px 4px 20px rgb(56, 53, 53);
 }
+.no-results {
+  font-size: 1.2rem;
+  color: black;
+  text-align: center;
+  width: 100%;
+}
+.search-active .professor-cards {
+  margin-top: 2rem; 
+}
+
 .no-results {
   font-size: 1.2rem;
   color: black;
