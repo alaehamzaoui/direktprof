@@ -1,9 +1,11 @@
 <template>
   <div class="container mt-4 page-wrap" v-if="prof">
+
     <div class="row">
       <div class="col-sm-4">
         <div class="card mb-4">
           <img :src="require(`../assets/${prof.imageUrl}`)" class="card-img-top rounded-circle" alt="Professor Bild" />
+          
           <div class="card-body">
             <h5 class="card-title">{{ prof.titel }} {{ prof.vorname }} {{ prof.nachname }}</h5>
             <p>Fachbereich Elektrotechnik und Informatik</p>
@@ -26,7 +28,7 @@
                   <div class="card-body-time">
                     <div class="time-detail">
                       <span>{{ timeSlot.start }} - {{ timeSlot.end }}</span>
-                      <span v-if="timeSlot.booked" class="status gebucht">Gebucht</span>
+                      <span v-if="timeSlot.booked" class="status gebucht">gebucht</span>
                       <button 
                         v-else 
                         class="btn-time buchen" 
@@ -35,11 +37,15 @@
                       </button>
                     </div>
                   </div>
+                 
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="back-link-container">
+        <a href="/" class="back-link">« zurück</a>
       </div>
     </div>
 
@@ -56,23 +62,25 @@
           <div class="modal-body">
             <form @submit.prevent="bookAppointment">
               <div class="form-group">
-                <label for="email">E-Mail</label>
-                <input type="email" class="form-control" id="email" v-model="email" required />
-              </div>
-              <div class="form-group">
-                <label for="topic">Anliegen</label>
-                <input type="text" class="form-control" id="topic" v-model="topic" required />
-              </div>
-              <div class="form-group">
-                <label for="studentName">Student Name</label>
+                <label for="studentName">Vor- und Nachnamen</label>
                 <input type="text" class="form-control" id="studentName" v-model="studentName" required />
               </div>
               <div class="form-group">
                 <label for="matrikelNumber">Matrikelnummer</label>
                 <input type="text" class="form-control" id="matrikelNumber" v-model="matrikelNumber" required />
               </div>
+              <div class="form-group">
+                <label for="email">E-Mail Adresse</label>
+                <input type="email" class="form-control" id="email" v-model="email" required />
+              </div>
+              <div class="form-group">
+                <label for="topic">Anliegen</label>
+                <input type="text" class="form-control" id="topic" v-model="topic" required />
+              </div>
+             
+              
               <div class="text-center">
-                <button type="submit" class="btn-senden">Senden</button>
+                <button type="submit" class="btn-senden">Absenden</button>
               </div>
             </form>
           </div>
@@ -234,16 +242,24 @@ html, body {
 }
 .container {
   color: black;
+
 }
 
 /* Profile Card Styles */
 .card-body {
   background-color: white;
   text-align: left;
+  color: red;
+
+}
+a[href^="mailto:"]{ 
+  color: red;
 }
 .card-title {
   color: black;
   font-weight: bold;
+  text-align: center;
+
 }
 .card img {
   max-width: 150px;
@@ -272,6 +288,8 @@ html, body {
 .h4-card-appointment-title {
   text-align: center;
   margin-bottom: 20px;
+  margin-right: 10%;
+
 }
 .btn-grid {
   display: flex;
@@ -279,22 +297,41 @@ html, body {
   justify-content: center;
 }
 .card-time {
-  border-radius: 5px;
-  margin: 5px;
-  padding: 5px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  margin: 10px;
+  padding: 10px;
   border: 1px solid #ddd;
   background-color: #f9f9f9;
-  text-align: center;
+  box-shadow: 10px 4px 10px gray;
+  margin-left: 0%;
 }
 .card-header-time {
   padding: 10px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   color: black;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  text-align: center;      
+
+}
+.card-header-time :hover{
+  background-color: #bdb6b6;
 }
 .card-body-time {
   padding: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-size: 1.5rem;       
+  /*font-weight: bold;*/
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  text-align: center;   
+  height: 100px; 
+  margin-top: -10px;
+
 }
 .btn-date {
   width: 100%;
@@ -302,57 +339,86 @@ html, body {
   color: black;
   border: none;
   padding: 10px;
+  border-radius: 30px;
+  /*box-shadow: 10px 4px 20px rgb(104, 97, 97);*/
 }
 .btn-time {
   width: 100%;
+  background-color: rgb(9, 156, 9);
   color: white;
   border: none;
   padding: 10px;
   margin: 5px 0;
+  box-shadow: 10px 4px 20px rgb(155, 151, 151);
+  border-radius: 30px;
 }
-.buchen {
-  background-color: rgb(9, 156, 9);
-  color: white;
-  border: none;
-  width: 50%;
-  padding: 10px 20px;
-  border-radius: 15px;
-}
-.gebucht {
-  background-color: red;
-  color: white;
-  padding: 10px;
-  border-radius: 15px;
-  display: inline-block;
-  width: 50%;
+.btn-time:hover {
+  background-color: darkgreen;
 }
 
+.gebucht {
+  background-color: rgb(100, 98, 98);
+  box-shadow: 10px 4px 20px rgb(155, 151, 151);
+  color: white;
+  padding: 10px;
+  border-radius: 30px;
+  display: inline-block;
+  width: 100%;
+  border: none;
+  margin: 5px 0;
+}
 .time-detail {
-  display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
 }
+.back-link-container {
+  display: flex;
+  justify-content: flex-start; 
+  padding: 10px;
+  margin-left: 10px; 
+}
+
+.back-link {
+  font-size: 1.5rem;           
+  color: #000;               
+  text-decoration: none;     
+}
+
+.back-link:hover {
+  text-decoration: underline; 
+}
 
 /* Modal Styles */
 .modal-dialog {
-  border-radius: 10px;
+  border-radius: 30px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 .modal-header {
-  background-color: #bdb6b6;
+  background-color:red;
   color: white;
+}
+.form-control{
+  box-shadow: 2px 2px 2px gray;
 }
 .close {
   color: black;
+  border-radius: 50%;
+  width: 5%;
+  border: none;
+  box-shadow: 4px 4px 10px gray;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 .btn-senden {
   background-color: red;
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 30px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 5%;
 }
 .btn-senden:hover {
   background-color: darkred;
@@ -361,9 +427,28 @@ html, body {
   padding: auto;
   padding-left: 0%;
   width: 100%;
-  min-height: 893px;
+  min-height: 1000px;
   margin-bottom: -140px;
 }
+.backbutton{
+  margin-left: 0%;
+  margin-top: 5%;
+  margin-right: 0%;
+}
+.btn-back {
+  background-color: #bdb6b6;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 4px 4px 10px gray;
+  margin-left: 2%;
+}
+.btn-back:hover {
+  background-color: darkgrey;
+}
+
+
 
 @media (min-width: 1400px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
