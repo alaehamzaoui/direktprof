@@ -1,5 +1,7 @@
 
 <template>
+    <div class="prof-seite">
+
   <section class="hero">
     <img class="hero-image" src="../assets/img/hs-bo-startseiteBild.jpg" alt="Header Image" />
    
@@ -29,6 +31,8 @@
   </div>
 </section>
 
+<div class="empty-space"></div>
+</div>
 </template>
 
 <script>
@@ -213,6 +217,19 @@ body {
   display: flex;
   width: 60%;
   box-shadow: 10px 5px 10px rgb(109, 106, 106);
+}
+.profs-liste {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.empty-space {
+  height: 20vh; /* 15% of the viewport height */
 }
 
 </style>

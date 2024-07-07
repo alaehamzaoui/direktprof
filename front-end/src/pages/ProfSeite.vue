@@ -226,14 +226,18 @@ export default {
     }
   }
 };
-</script>
+</script >
 
-<style>
+<style scoped>
+.empty-space {
+  height: 5rem; /* Adjust this value to achieve the desired height */
+}
 /* General Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  margin-bottom: 15px;
 }
 html, body {
   height: 100%;
@@ -248,6 +252,7 @@ html, body {
   background-color: white;
   text-align: left;
   color: red;
+
 
 }
 a[href^="mailto:"]{ 
@@ -301,7 +306,7 @@ a[href^="mailto:"]{
   border: 1px solid #ddd;
   background-color: #f9f9f9;
   box-shadow: 10px 4px 10px gray;
-  margin-left: 0%;
+  margin-left: 5%;
 }
 .card-header-time {
   padding: 10px;

@@ -50,4 +50,16 @@ footer {
   padding-top: 10%;
   text-align: center;
 }
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 </style>
