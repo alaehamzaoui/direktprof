@@ -246,7 +246,13 @@ html, body {
   color: black;
 
 }
-
+.row{
+  padding-left: 3%;
+}
+.card{
+  padding-left: 5%;
+  padding-right: 5%;
+}
 /* Profile Card Styles */
 .card-body {
   background-color: white;
