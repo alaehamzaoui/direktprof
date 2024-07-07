@@ -175,45 +175,43 @@ export default {
         });
     },
     processTimeSlots() {
-      const daysOfWeek = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
-      const slots = [];
-      const today = new Date();
-      const currentDay = getDay(today);
+    const daysOfWeek = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+    const slots = [];
+    const today = new Date();
+    const currentDay = getDay(today);
 
-      // Determine the start of the first week to display
-      const startOfFirstWeek = currentDay === 6 || currentDay === 0
-        ? startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 })
-        : startOfWeek(today, { weekStartsOn: 1 });
+    const startOfSecondWeek = currentDay === 6 || currentDay === 0
+      ? startOfWeek(addWeeks(today, 2), { weekStartsOn: 1 })
+      : startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 });
 
-      this.prof.sprechstunde.forEach(slot => {
-        const dayIndex = slot.day - 1; // Convert 1-5 to 0-4 for weekdays
-        const dayName = daysOfWeek[dayIndex];
+    this.prof.sprechstunde.forEach(slot => {
+      const dayIndex = slot.day - 1; 
+      const dayName = daysOfWeek[dayIndex];
 
-        for (let weekOffset = 0; weekOffset < 2; weekOffset++) {
-          const dayDate = addDays(addWeeks(startOfFirstWeek, weekOffset), dayIndex);
-          const formattedDate = format(dayDate, 'dd-MM-yyyy');
-          const startTime = this.convertToMinutes(slot.start);
-          const endTime = this.convertToMinutes(slot.ende);
-          for (let time = startTime; time < endTime; time += 60) {
-            const slotObj = {
-              dayName,
-              date: dayDate,
-              formattedDate,
-              start: this.convertToTimeFormat(time),
-              end: this.convertToTimeFormat(time + 60),
-              booked: this.isBooked(formattedDate, this.convertToTimeFormat(time))  // Check if the slot is booked
-            };
-            slots.push(slotObj);
-          }
+      for (let weekOffset = 0; weekOffset < 2; weekOffset++) {
+        const dayDate = addDays(addWeeks(startOfSecondWeek, weekOffset), dayIndex);
+        const formattedDate = format(dayDate, 'dd-MM-yyyy');
+        const startTime = this.convertToMinutes(slot.start);
+        const endTime = this.convertToMinutes(slot.ende);
+        for (let time = startTime; time < endTime; time += 60) {
+          const slotObj = {
+            dayName,
+            date: dayDate,
+            formattedDate,
+            start: this.convertToTimeFormat(time),
+            end: this.convertToTimeFormat(time + 60),
+            booked: this.isBooked(formattedDate, this.convertToTimeFormat(time)) 
+          };
+          slots.push(slotObj);
         }
-      });
-      // Sort the slots by date
-      slots.sort((a, b) => a.date - b.date);
-      this.processedTimeSlots = slots.map(slot => ({
-        ...slot,
-        displayDate: `${slot.dayName} ${slot.formattedDate}`
-      }));
-    },
+      }
+    });
+    slots.sort((a, b) => a.date - b.date);
+    this.processedTimeSlots = slots.map(slot => ({
+      ...slot,
+      displayDate: `${slot.dayName} ${slot.formattedDate}`
+    }));
+  },
     isBooked(date, start) {
       return this.appointments.some(appointment => appointment.datum === date && appointment.start === start);
     },
