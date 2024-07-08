@@ -9,10 +9,32 @@
 <script>
 export default {
   name: 'DeleteAppointment',
+  data() {
+    return {
+      appointmentId: this.$route.params.appointmentId
+    };
+  },
   mounted() {
-    setTimeout(() => {
-      this.$router.push('/');
-    }, 4000); 
+    this.deleteAppointment();
+  },
+  methods: {
+    async deleteAppointment() {
+      try {
+        const response = await fetch(`/api/appointments/${this.appointmentId}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete appointment');
+        }
+        console.log('Appointment deleted successfully');
+      } catch (error) {
+        console.error('Error deleting appointment:', error);
+      } finally {
+        setTimeout(() => {
+          this.$router.push('/');
+        }, 2000); 
+      }
+    }
   }
 };
 </script>
