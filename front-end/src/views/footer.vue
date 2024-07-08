@@ -6,24 +6,13 @@
       </div>
     </footer>
   </template>
-
   <script>
   export default {
       name: 'Footer-vue',
   }
   </script>
   
-  <style scoped>
-  
-footer {
-  padding-top: 20px;
-  background-color: red;
-  height: 100px;
-  bottom: 0;
-  width: 100%;
-  
-}
-
+<style scoped>
 .description {
   float: left;
   margin-bottom: 0%;
@@ -39,8 +28,12 @@ footer {
   height: auto;
   order: 2; 
 }
-  
-footer, .page-wrap:after {
-  height: 140px; 
+footer { 
+  position: relative;
+  width: 100%;
+  background-color: red;
+  text-align: center;
+  bottom:0;
+  left:0;
 }
   </style>

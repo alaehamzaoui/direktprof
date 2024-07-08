@@ -1,26 +1,25 @@
 <template>
   <div class="container mt-4 page-wrap" v-if="prof">
 
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="card mb-4">
+    <div class="row container-7awi">
+      <div class="col-sm-3" id="idprof">
+        <div class="card ">
           <img :src="require(`../assets/${prof.imageUrl}`)" class="card-img-top rounded-circle" alt="Professor Bild" />
-          
           <div class="card-body">
             <h5 class="card-title">{{ prof.titel }} {{ prof.vorname }} {{ prof.nachname }}</h5>
             <p>Fachbereich Elektrotechnik und Informatik</p>
-            <p><i class="fas fa-phone"></i> {{ prof.telefonnummer }}</p>
-            <p><i class="fas fa-map-marker-alt"></i> Raum: {{ prof.raum }}</p>
-            <p><i class="fas fa-envelope"></i> <a :href="'mailto:' + prof.email">{{ prof.email }}</a></p>
+            <br><p><i class="fas fa-phone"> test</i> {{ prof.telefonnummer }}</p>
+            <br><p><i class="fas fa-map-marker-alt"></i> Raum: {{ prof.raum }}</p>
+            <br><p><i class="fas fa-envelope"></i> <a :href="'mailto:' + prof.email">{{ prof.email }}</a></p>
           </div>
         </div>
       </div>
-      <div class="col-sm-8">
+      <div  id="idapp">
         <div class="appointments">
           <h4 class="h4-card-appointment-title">Bitte wählen Sie einen Termin aus!</h4>
           <div class="btn-grid">
             <div class="row" v-for="(timeSlot, index) in processedTimeSlots" :key="index">
-              <div class="col">
+              <div >
                 <div class="card-time">
                   <div class="card-header-time">
                     <h5 class="btn-date">{{ timeSlot.displayDate }}</h5>
@@ -150,7 +149,7 @@ export default {
         professorName: `${this.prof.titel} ${this.prof.vorname} ${this.prof.nachname}`,
         matrikelNumber: this.matrikelNumber,
         studentEmail: this.email,
-        raum: this.prof.raum // Add room to appointment data
+        raum: this.prof.raum 
       };
 
       try {
@@ -236,18 +235,10 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  margin-bottom: 15px;
 }
-html, body {
-  height: 100%;
-}
+
 .container {
   color: black;
-
-}
-.row{
-  padding-left: 3%;
 }
 .card{
   padding-left: 5%;
@@ -258,8 +249,6 @@ html, body {
   background-color: white;
   text-align: left;
   color: red;
-
-
 }
 a[href^="mailto:"]{ 
   color: red;
@@ -307,12 +296,12 @@ a[href^="mailto:"]{
 }
 .card-time {
   border-radius: 15px;
-  margin: 10px;
   padding: 10px;
   border: 1px solid #ddd;
   background-color: #f9f9f9;
   box-shadow: 10px 4px 10px gray;
-  margin-left: 5%;
+  margin-bottom: 30%;
+  margin-right:5%;
 }
 .card-header-time {
   padding: 10px;
@@ -323,13 +312,12 @@ a[href^="mailto:"]{
   justify-content: center; 
   align-items: center; 
   text-align: center;      
-
 }
 .card-header-time :hover{
   background-color: #bdb6b6;
 }
 .card-body-time {
-  padding: 10px;
+  
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 1.5rem;       
@@ -391,7 +379,8 @@ a[href^="mailto:"]{
 .back-link {
   font-size: 1.5rem;           
   color: #000;               
-  text-decoration: none;     
+  text-decoration: none;   
+  margin-top: 5%;  
 }
 
 .back-link:hover {
@@ -402,13 +391,20 @@ a[href^="mailto:"]{
 .modal-dialog {
   border-radius: 30px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-left: 35%;
+  margin-top: 5%;
 }
 .modal-header {
-  background-color:red;
-  color: white;
+  margin: 0;
+  margin-bottom:5px;
+}
+.modal-content {
+  padding-top: 20%;
+  padding: 15px
 }
 .form-control{
-  box-shadow: 2px 2px 2px gray;
+  height:5vh;
+
 }
 .close {
   color: black;
@@ -437,7 +433,6 @@ a[href^="mailto:"]{
   padding-left: 0%;
   width: 100%;
   min-height: 1000px;
-  margin-bottom: -140px;
 }
 .backbutton{
   margin-left: 0%;
@@ -456,12 +451,38 @@ a[href^="mailto:"]{
 .btn-back:hover {
   background-color: darkgrey;
 }
-
-
-
 @media (min-width: 1400px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
         max-width: 1600px;
     }
+}
+#idprof{
+  float: left;
+  padding-left: 5%;
+  margin-top:5%;
+  width: 25%;
+}
+#idprof .card{
+
+  width: 100%;
+
+}
+#idprof .card-body{
+ font-family: DejaVu Sans Mono, monospace;
+ margin-bottom: 15%;
+ font-size: 1rem;
+}
+
+#idapp{
+width: 75%;
+float: right;
+padding-top: 5%;
+}
+.container-7awi{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 7%;
+  
 }
 </style>

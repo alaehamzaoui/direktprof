@@ -223,11 +223,9 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 .content {
   flex: 1;
 }
-
 .empty-space {
   height: 20vh; /* 15% of the viewport height */
 }

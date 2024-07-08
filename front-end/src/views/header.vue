@@ -28,7 +28,6 @@ header {
   text-align: center;
   height: 50px;
 }
-
 .header-title {
   font-size: 2rem;
   color: #ffffff;
