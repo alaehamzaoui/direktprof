@@ -1,6 +1,5 @@
 <template>
-  <div class="container mt-4 page-wrap" v-if="prof">
-
+  <div style="width: 100%;"  v-if="prof">
     <div class="row container-7awi">
       <div class="col-sm-3" id="idprof">
         <div class="card ">
@@ -18,7 +17,7 @@
         <div class="appointments">
           <h4 class="h4-card-appointment-title">Bitte wählen Sie einen Termin aus!</h4>
           <div class="btn-grid">
-            <div class="row" v-for="(timeSlot, index) in processedTimeSlots" :key="index">
+            <div class="row-app" v-for="(timeSlot, index) in processedTimeSlots" :key="index">
               <div >
                 <div class="card-time">
                   <div class="card-header-time">
@@ -399,6 +398,7 @@ a[href^="mailto:"]{
   margin-bottom:5px;
 }
 .modal-content {
+  color: black;
   padding-top: 20%;
   padding: 15px
 }
@@ -472,13 +472,6 @@ a[href^="mailto:"]{
  margin-bottom: 15%;
  font-size: 1rem;
 }
-
-#idapp{
-width: 75%;
-float: right;
-padding-top: 5%;
-}
-
 .page-wrap {
   width: 100%;
   min-height: 1000px;
@@ -511,19 +504,20 @@ padding-top: 5%;
   font-size: 1rem;
 }
 
-#idapp {
-  flex: 3 1 600px;
-  padding-top: 5%;
-  width: 75%;
+#idapp{
+color: black;
+width: 77%;
+float: right;
+padding-top: 5%;
 }
-
-
 
 .card-time {
   margin: 10px;
   padding: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  margin-bottom: 60px;
+  margin-right: 10%;
 }
 
 .card-header-time {
@@ -532,13 +526,13 @@ padding-top: 5%;
   padding: 10px;
   border-radius: 10px 10px 0 0;
 }
-
 .card-body-time {
   padding: 10px;
 }
-
 .status {
   color: red;
+  border-radius: 5px;
+  height: 50px;
 }
 
 .buchen {
@@ -567,7 +561,6 @@ padding-top: 5%;
 .back-link:hover {
   text-decoration: underline;
 }
-
 @media (max-width: 768px) {
   #idprof {
     min-width: 100%;
@@ -580,7 +573,6 @@ padding-top: 5%;
     padding-top: 2%;
   }
 }
-
 @media (min-width: 1400px) {
   .container,
   .container-lg,
@@ -588,7 +580,11 @@ padding-top: 5%;
   .container-sm,
   .container-xl,
   .container-xxl {
-    max-width: 1600px;
+  max-width: 50%;
   }
+}
+
+.row-app{
+color : black;
 }
 </style>

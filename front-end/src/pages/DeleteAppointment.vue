@@ -1,8 +1,13 @@
 <template>
   <div class="delete-appointment-container">
-    <h1>Termin gelöscht</h1>
-    <p>Ihr Termin wurde erfolgreich gelöscht.</p>
-    <p>Sie werden in Kürze zur Startseite weitergeleitet...</p>
+    <div v-if="isLoading" class="loading-screen">
+      <p>Loading...</p>
+    </div>
+    <div style="color: black;" v-else>
+      <h1>Termin gelöscht !</h1>
+      <p>Ihr Termin wurde erfolgreich gelöscht.</p>
+      <p>Sie werden in Kürze zur Startseite weitergeleitet...</p>
+    </div>
   </div>
 </template>
 
@@ -11,7 +16,8 @@ export default {
   name: 'DeleteAppointment',
   data() {
     return {
-      appointmentId: this.$route.params.appointmentId
+      appointmentId: this.$route.params.appointmentId,
+      isLoading: true
     };
   },
   mounted() {
@@ -30,6 +36,7 @@ export default {
       } catch (error) {
         console.error('Error deleting appointment:', error);
       } finally {
+        this.isLoading = false;
         setTimeout(() => {
           this.$router.push('/');
         }, 2000); 
@@ -49,8 +56,21 @@ export default {
   text-align: center;
 }
 
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loading-screen p {
+  font-size: 2em;
+  color: #000;
+}
+
 .delete-appointment-container h1 {
-  color: red;
+  color: #000;
   margin-bottom: 20px;
 }
 
