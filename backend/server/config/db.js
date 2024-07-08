@@ -11,5 +11,3 @@ const connectDB = async () => {
   }
 };
 module.exports = connectDB;
-//TEST TEST
-//JIKR$EULS

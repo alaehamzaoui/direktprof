@@ -5,7 +5,7 @@ const app = express();
 const connectDB = require('./server/config/db');
 const prof = require('./models/profs');
 const Termin = require('./models/termin'); // Import Termin model
-const { sendEmail } = require('./mailer');
+const { sendEmail, sendDeletionEmail } = require('./mailer');
 
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, './assets/img/profspic')));
@@ -56,11 +56,10 @@ app.post('/api/appointments', async (req, res) => {
     try {
         const result = await termin.save();
 
-        // Send email to student
         const studentText = 'Ihr Termin wurde gebucht.';
         await sendEmail(studentEmail, 'Terminbestätigung', studentText, result);
 
-        // Send email to professor
+
         const profEmail = 'ilyaserrarhoute@gmail.com';
         const profText = 'Ein neuer Termin wurde gebucht.';
         await sendEmail(profEmail, 'Neue Terminbuchung', profText, result, true);
@@ -119,14 +118,20 @@ app.get('/api/appointments', (req, res) => {
 
 app.delete('/api/appointments/:id', async (req, res) => {
     const appointmentId = req.params.id;
-    
+    console.log(`Attempting to delete appointment with id: ${appointmentId}`);
     try {
         const appointment = await Termin.findOneAndDelete({ id: appointmentId });
         if (!appointment) {
+            console.log(`No appointment found with id: ${appointmentId}`);
             return res.status(404).send('The appointment with the given ID was not found');
         }
-        console.log(`Appointment deleted with id: ${appointmentId}`);
-        res.send({ message: 'Appointment deleted successfully' });
+
+  
+        const profEmail = 'ilyaserrarhoute@gmail.com';
+        await sendDeletionEmail(profEmail, appointment);
+
+        console.log(`Termin gelöscht mit id: ${appointmentId}`);
+        res.send({ message: 'Termin erfolgreich gelöscht' });
     } catch (err) {
         console.error(`Error deleting appointment with id: ${appointmentId}`, err);
         res.status(500).send('Internal Server Error');

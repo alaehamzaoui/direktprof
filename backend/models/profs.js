@@ -1,6 +1,5 @@
 const mongoose= require('mongoose');
 
-//define the struture of profs
 const Schema = mongoose.Schema;
 const profSchema= new Schema({
     id: {
