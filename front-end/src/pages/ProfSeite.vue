@@ -135,10 +135,6 @@ export default {
       this.showModal = true;
     },
     async bookAppointment() {
-      if (!this.selectedTimeSlot) {
-        alert('Bitte wählen Sie ein Zeitfenster aus.');
-        return;
-      }
       const appointmentData = {
         object: this.topic,
         datum: this.selectedTimeSlot.formattedDate,
@@ -461,7 +457,7 @@ a[href^="mailto:"]{
   float: left;
   padding-left: 5%;
   margin-top:5%;
-  width: 25%;
+  width: 20%;
 }
 
 #idprof .card-body{
@@ -556,4 +552,9 @@ padding-top: 5%;
 .row-app{
 color : black;
 }
+.router{
+}
+.card {
+ box-shadow: -4px 5px 8px 0px gray; 
+  }
 </style>
