@@ -240,6 +240,7 @@ export default {
   color: black;
 }
 .card{
+  width: 300px;
   padding-left: 5%;
   padding-right: 5%;
 }
@@ -462,11 +463,7 @@ a[href^="mailto:"]{
   margin-top:5%;
   width: 25%;
 }
-#idprof .card{
 
-  width: 100%;
-
-}
 #idprof .card-body{
  font-family: DejaVu Sans Mono, monospace;
  margin-bottom: 15%;
@@ -483,21 +480,15 @@ a[href^="mailto:"]{
   width: 85%;
   margin-left: 7%;
   margin-right: 7%;
-
   flex-wrap: wrap;
 }
 
 #idprof {
-  flex: 1 1 300px;
+  flex: 1 1 ;
   padding-left: 5%;
   margin-top: 5%;
-  min-width: 280px;
+  min-width: 260px;
 }
-
-#idprof .card {
-  width: 100%;
-}
-
 #idprof .card-body {
   font-family: DejaVu Sans Mono, monospace;
   margin-bottom: 15%;
@@ -560,28 +551,6 @@ padding-top: 5%;
 
 .back-link:hover {
   text-decoration: underline;
-}
-@media (max-width: 768px) {
-  #idprof {
-    min-width: 100%;
-    padding-left: 0;
-    margin-top: 2%;
-  }
-
-  #idapp {
-    min-width: 100%;
-    padding-top: 2%;
-  }
-}
-@media (min-width: 1400px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container-xl,
-  .container-xxl {
-  max-width: 50%;
-  }
 }
 
 .row-app{
