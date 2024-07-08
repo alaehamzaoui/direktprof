@@ -1,35 +1,38 @@
 <template>
-    <div>
-      <h1>Delete Appointment</h1>
-      <p v-if="message">{{ message }}</p>
-      <p v-else>Deleting appointment...</p>
-    </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    data() {
-      return {
-        message: ''
-      };
-    },
-    async created() {
-      try {
-        const appointmentId = this.$route.params.appointmentId;
-        console.log(`Deleting appointment with id: ${appointmentId}`);
-        const response = await axios.delete(`/api/appointments/${appointmentId}`);
-        this.message = response.data.message;
-      } catch (error) {
-        console.error('Error deleting appointment:', error);
-        this.message = 'There was an error deleting the appointment.';
-      }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  /* Add any required styles */
-  </style>
-  
+  <div class="delete-appointment-container">
+    <h1>Termin gelöscht</h1>
+    <p>Ihr Termin wurde erfolgreich gelöscht.</p>
+    <p>Sie werden in Kürze zur Startseite weitergeleitet...</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'DeleteAppointment',
+  mounted() {
+    setTimeout(() => {
+      this.$router.push('/');
+    }, 4000); 
+  }
+};
+</script>
+
+<style scoped>
+.delete-appointment-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.delete-appointment-container h1 {
+  color: red;
+  margin-bottom: 20px;
+}
+
+.delete-appointment-container p {
+  font-size: 1.2em;
+}
+</style>

@@ -478,11 +478,117 @@ width: 75%;
 float: right;
 padding-top: 5%;
 }
-.container-7awi{
+
+.page-wrap {
+  width: 100%;
+  min-height: 1000px;
+}
+
+.container-7awi {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 85%;
   margin-left: 7%;
-  
+  margin-right: 7%;
+
+  flex-wrap: wrap;
+}
+
+#idprof {
+  flex: 1 1 300px;
+  padding-left: 5%;
+  margin-top: 5%;
+  min-width: 280px;
+}
+
+#idprof .card {
+  width: 100%;
+}
+
+#idprof .card-body {
+  font-family: DejaVu Sans Mono, monospace;
+  margin-bottom: 15%;
+  font-size: 1rem;
+}
+
+#idapp {
+  flex: 3 1 600px;
+  padding-top: 5%;
+  width: 75%;
+}
+
+
+
+.card-time {
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.card-header-time {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+}
+
+.card-body-time {
+  padding: 10px;
+}
+
+.status {
+  color: red;
+}
+
+.buchen {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-link-container {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.back-link {
+  font-size: 1.5rem;
+  color: #000;
+  text-decoration: none;
+  margin-top: 5%;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  #idprof {
+    min-width: 100%;
+    padding-left: 0;
+    margin-top: 2%;
+  }
+
+  #idapp {
+    min-width: 100%;
+    padding-top: 2%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    max-width: 1600px;
+  }
 }
 </style>

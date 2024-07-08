@@ -6,13 +6,16 @@ import App from './App.vue';
 import * as VueRouter from 'vue-router';
 import ProfsListe from './pages/ProfsListe.vue';
 import ProfSeite from './pages/ProfSeite.vue';
-import DeleteAppointment from './pages/DeleteAppointment.vue'; // Import the new component
+import DeleteAppointment from './pages/DeleteAppointment.vue'; 
+const routes = [
+  { path: '/', component: ProfsListe },
+  { path: '/profs/:profId', component: ProfSeite },
+  { path: '/delete-appointment/:appointmentId', component: DeleteAppointment } 
+];
 
-createApp(App).use(VueRouter.createRouter({
+const router = VueRouter.createRouter({
   history: VueRouter.createWebHistory(process.env.BASE_URL),
-  routes: [
-    { path: '/', component: ProfsListe },
-    { path: '/profs/:profId', component: ProfSeite },
-    { path: '/delete-appointment/:appointmentId', component: DeleteAppointment } // Add the new route
-  ]
-})).mount('#app');
+  routes,
+});
+
+createApp(App).use(router).mount('#app');
