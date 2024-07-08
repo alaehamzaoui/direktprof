@@ -26,7 +26,7 @@
                   <div class="card-body-time">
                     <div class="time-detail">
                       <span>{{ timeSlot.start }} - {{ timeSlot.end }}</span>
-                      <span v-if="timeSlot.booked" class="status gebucht">gebucht</span>
+                      <span v-if="timeSlot.booked" class="status gebucht">Gebucht</span>
                       <button 
                         v-else 
                         class="btn-time buchen" 
@@ -530,8 +530,8 @@ padding-top: 5%;
   padding: 10px;
 }
 .status {
-  color: red;
-  border-radius: 5px;
+  color:whitesmoke;
+  border-radius: 30px;
   height: 50px;
 }
 
@@ -540,7 +540,7 @@ padding-top: 5%;
   color: white;
   border: none;
   padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: 30px;
   cursor: pointer;
 }
 
