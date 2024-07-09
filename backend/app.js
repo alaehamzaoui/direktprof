@@ -118,22 +118,21 @@ app.get('/api/appointments', (req, res) => {
 
 app.delete('/api/appointments/:id', async (req, res) => {
     const appointmentId = req.params.id;
-    console.log(`Attempting to delete appointment with id: ${appointmentId}`);
+    console.log(`Beim Versuch, einen Termin mit der id zu löschen: ${appointmentId}`);
     try {
         const appointment = await Termin.findOneAndDelete({ id: appointmentId });
         if (!appointment) {
-            console.log(`No appointment found with id: ${appointmentId}`);
-            return res.status(404).send('The appointment with the given ID was not found');
+            console.log(`Kein Termin gefunden mit id : ${appointmentId}`);
+            return res.status(404).send('Der Termin mit der angegebenen ID wurde nicht gefunden');
         }
 
-  
-        const profEmail = 'ilyaserrarhoute@gmail.com';
+ const profEmail = 'ilyaserrarhoute@gmail.com';
         await sendDeletionEmail(profEmail, appointment);
 
         console.log(`Termin gelöscht mit id: ${appointmentId}`);
         res.send({ message: 'Termin erfolgreich gelöscht' });
     } catch (err) {
-        console.error(`Error deleting appointment with id: ${appointmentId}`, err);
+        console.error(`Fehler beim Löschen eines Termins mit id: ${appointmentId}`, err);
         res.status(500).send('Internal Server Error');
     }
 });
