@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmail = (to, subject, text, appointment = null, isProfessor = false) => {
-  let deleteLink = appointment ? `\n\nUm den Termin zu stonieren, klicken Sie auf den untenstehenden Link:\n${process.env.BASE_URL}/delete-appointment/${appointment.id}` : '';
+  let deleteLink = appointment ? `\n\nUm den Termin zu stornieren, klicken Sie auf den untenstehenden Link:\n${process.env.BASE_URL}/delete-appointment/${appointment.id}` : '';
   let emailText = `${text}${deleteLink}`;
 
   if (isProfessor) {
@@ -37,8 +37,8 @@ const sendEmail = (to, subject, text, appointment = null, isProfessor = false) =
 };
 
 const sendDeletionEmail = (to, appointment) => {
-  const subject = 'Termin wurde stoniert';
-  const text = `Der Termin mit folgenden Details wurde stoniert:\n- Anliegen: ${appointment.object}\n- Datum: ${appointment.datum}\n- Startzeit: ${appointment.start}\n- Endzeit: ${appointment.ende}\n- Raum: ${appointment.raum}\n- Student: ${appointment.studentName}\n- Matrikelnummer: ${appointment.matrikelNumber}\n- Student Email: ${appointment.studentEmail}`;
+  const subject = 'Termin wurde storniert';
+  const text = `Der Termin mit folgenden Details wurde storniert:\n- Anliegen: ${appointment.object}\n- Datum: ${appointment.datum}\n- Startzeit: ${appointment.start}\n- Endzeit: ${appointment.ende}\n- Raum: ${appointment.raum}\n- Student: ${appointment.studentName}\n- Matrikelnummer: ${appointment.matrikelNumber}\n- Student Email: ${appointment.studentEmail}`;
   
   const mailOptions = {
     from: process.env.SMTP_EMAIL,
