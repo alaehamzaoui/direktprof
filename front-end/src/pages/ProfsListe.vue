@@ -132,12 +132,7 @@ body {
   height: 40%;
   box-shadow: 10px 4px 20px rgb(56, 53, 53);
 }
-.no-results {
-  font-size: 1.2rem;
-  color: black;
-  text-align: center;
-  width: 100%;
-}
+
 .search-active .professor-cards {
   margin-top: 2rem; 
 }

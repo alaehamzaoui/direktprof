@@ -149,12 +149,12 @@ export default {
 
       try {
         await axios.post('/api/appointments', appointmentData);
-        alert('Buchung erfolgreich! Sie erhalten eine Bestätigung per E-Mail.');
+        alert('Ihre Buchung ist erfolgreich! Eine Bestätigung wird Ihnen per E-Mail zugestellt.');       
         this.closeModal();
         this.fetchAppointments();
       } catch (error) {
-        console.error('Fehler bei der Buchung des Termins:', error);
-        alert('Fehler beim Buchen des Termins.');
+        console.error('Fehler bei der Terminbuchung:', error);
+        alert('Terminbuchung fehlgeschlagen.');
       }
     },
     fetchAppointments() {

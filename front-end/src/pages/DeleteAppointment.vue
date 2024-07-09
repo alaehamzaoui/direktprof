@@ -4,8 +4,11 @@
       <p>Loading...</p>
     </div>
     <div style="color: black;" v-else>
-      <h1>Termin gelöscht !</h1>
-      <p>Ihr Termin wurde erfolgreich gelöscht.</p>
+      <div class="checkmark-container">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h1>Bestätigung der Stornierung!</h1>
+      <p>Ihr Termin wurde erfolgreich storniert.</p>
       <p>Sie werden in Kürze zur Startseite weitergeleitet...</p>
     </div>
   </div>
@@ -39,7 +42,7 @@ export default {
         this.isLoading = false;
         setTimeout(() => {
           this.$router.push('/');
-        }, 2000); 
+        }, 3000); 
       }
     }
   }
@@ -47,6 +50,13 @@ export default {
 </script>
 
 <style scoped>
+/*@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'); */
+
+.checkmark-container {
+  font-size: 4em;
+  color: black;
+  margin-bottom: 20px;
+}
 .delete-appointment-container {
   display: flex;
   flex-direction: column;
@@ -70,6 +80,8 @@ export default {
 }
 
 .delete-appointment-container h1 {
+  font-weight: bold;
+
   color: #000;
   margin-bottom: 20px;
 }
