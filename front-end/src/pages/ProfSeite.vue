@@ -7,9 +7,9 @@
           <div class="card-body">
             <h5 class="card-title">{{ prof.titel }} {{ prof.vorname }} {{ prof.nachname }}</h5>
             <p>Fachbereich Elektrotechnik und Informatik</p>
-            <br><p><i class="fas fa-phone"> test</i> {{ prof.telefonnummer }}</p>
-            <br><p><i class="fas fa-map-marker-alt"></i> Raum: {{ prof.raum }}</p>
-            <br><p><i class="fas fa-envelope"></i> <a :href="'mailto:' + prof.email">{{ prof.email }}</a></p>
+            <p><i class="fas fa-phone"> test</i> {{ prof.telefonnummer }}</p>
+            <p><i class="fas fa-map-marker-alt"></i> Raum: {{ prof.raum }}</p>
+            <p><i class="fas fa-envelope"></i> <a :href="'mailto:' + prof.email">{{ prof.email }}</a></p>
           </div>
         </div>
       </div>
@@ -231,7 +231,6 @@ export default {
   margin: 0;
   padding: 0;
 }
-
 .container {
   color: black;
 }
@@ -253,7 +252,9 @@ a[href^="mailto:"]{
   color: black;
   font-weight: bold;
   text-align: center;
-
+}
+.card-title ,p{
+  margin-bottom: 4%;
 }
 .card img {
   max-width: 150px;
@@ -313,7 +314,6 @@ a[href^="mailto:"]{
   background-color: #bdb6b6;
 }
 .card-body-time {
-  
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 1.5rem;       
@@ -437,7 +437,6 @@ a[href^="mailto:"]{
   margin-right: 0%;
 }
 .btn-back {
-  background-color: #bdb6b6;
   color: black;
   border: none;
   padding: 10px 20px;
@@ -455,15 +454,17 @@ a[href^="mailto:"]{
 }
 #idprof{
   float: left;
-  padding-left: 5%;
   margin-top:5%;
-  width: 20%;
+  padding-right: 5%;
+  padding-left: 3%;
+  width: 350px;
 }
-
 #idprof .card-body{
  font-family: DejaVu Sans Mono, monospace;
  margin-bottom: 15%;
  font-size: 1rem;
+ flex: 1 1 ;
+ width: 100%;
 }
 .page-wrap {
   width: 100%;
@@ -473,22 +474,14 @@ a[href^="mailto:"]{
 .container-7awi {
   display: flex;
   justify-content: space-between;
-  width: 85%;
-  margin-left: 7%;
-  margin-right: 7%;
+  width: 100%;
   flex-wrap: wrap;
 }
 
-#idprof {
-  flex: 1 1 ;
-  padding-left: 5%;
-  margin-top: 5%;
-  min-width: 260px;
-}
 #idprof .card-body {
   font-family: DejaVu Sans Mono, monospace;
   margin-bottom: 15%;
-  font-size: 1rem;
+  font-size: medium;
 }
 
 #idapp{
@@ -499,12 +492,13 @@ padding-top: 5%;
 }
 
 .card-time {
-  margin: 10px;
-  padding: 10px;
+  margin: 2%;
+  padding: 2px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin-bottom: 60px;
-  margin-right: 10%;
+  border-radius: 15px;
+  margin-bottom: 20%;
+  margin-right: 5%;
+
 }
 
 .card-header-time {
